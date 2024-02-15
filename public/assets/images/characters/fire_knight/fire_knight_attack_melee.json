@@ -1,0 +1,250 @@
+{
+	"textures": [
+		{
+			"image": "fire_knight_attack_melee",
+			"format": "RGBA8888",
+			"size": {
+				"w": 379,
+				"h": 176
+			},
+			"scale": 1,
+			"frames": [
+				{
+					"filename": "5.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 107,
+						"h": 83
+					},
+					"spriteSourceSize": {
+						"x": 13,
+						"y": 0,
+						"w": 94,
+						"h": 83
+					},
+					"frame": {
+						"x": 1,
+						"y": 1,
+						"w": 94,
+						"h": 83
+					}
+				},
+				{
+					"filename": "6.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 107,
+						"h": 83
+					},
+					"spriteSourceSize": {
+						"x": 33,
+						"y": 2,
+						"w": 73,
+						"h": 81
+					},
+					"frame": {
+						"x": 97,
+						"y": 1,
+						"w": 73,
+						"h": 81
+					}
+				},
+				{
+					"filename": "7.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 107,
+						"h": 83
+					},
+					"spriteSourceSize": {
+						"x": 33,
+						"y": 10,
+						"w": 72,
+						"h": 73
+					},
+					"frame": {
+						"x": 172,
+						"y": 1,
+						"w": 72,
+						"h": 73
+					}
+				},
+				{
+					"filename": "8.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 107,
+						"h": 83
+					},
+					"spriteSourceSize": {
+						"x": 33,
+						"y": 45,
+						"w": 70,
+						"h": 38
+					},
+					"frame": {
+						"x": 246,
+						"y": 1,
+						"w": 70,
+						"h": 38
+					}
+				},
+				{
+					"filename": "11.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 107,
+						"h": 83
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 39,
+						"w": 60,
+						"h": 44
+					},
+					"frame": {
+						"x": 318,
+						"y": 1,
+						"w": 60,
+						"h": 44
+					}
+				},
+				{
+					"filename": "9.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 107,
+						"h": 83
+					},
+					"spriteSourceSize": {
+						"x": 25,
+						"y": 40,
+						"w": 57,
+						"h": 43
+					},
+					"frame": {
+						"x": 246,
+						"y": 41,
+						"w": 57,
+						"h": 43
+					}
+				},
+				{
+					"filename": "1.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 107,
+						"h": 83
+					},
+					"spriteSourceSize": {
+						"x": 13,
+						"y": 42,
+						"w": 51,
+						"h": 41
+					},
+					"frame": {
+						"x": 172,
+						"y": 76,
+						"w": 51,
+						"h": 41
+					}
+				},
+				{
+					"filename": "4.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 107,
+						"h": 83
+					},
+					"spriteSourceSize": {
+						"x": 20,
+						"y": 23,
+						"w": 48,
+						"h": 60
+					},
+					"frame": {
+						"x": 97,
+						"y": 84,
+						"w": 48,
+						"h": 60
+					}
+				},
+				{
+					"filename": "2.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 107,
+						"h": 83
+					},
+					"spriteSourceSize": {
+						"x": 18,
+						"y": 40,
+						"w": 45,
+						"h": 43
+					},
+					"frame": {
+						"x": 1,
+						"y": 86,
+						"w": 45,
+						"h": 43
+					}
+				},
+				{
+					"filename": "3.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 107,
+						"h": 83
+					},
+					"spriteSourceSize": {
+						"x": 23,
+						"y": 35,
+						"w": 41,
+						"h": 48
+					},
+					"frame": {
+						"x": 48,
+						"y": 86,
+						"w": 41,
+						"h": 48
+					}
+				},
+				{
+					"filename": "10.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 107,
+						"h": 83
+					},
+					"spriteSourceSize": {
+						"x": 27,
+						"y": 39,
+						"w": 33,
+						"h": 44
+					},
+					"frame": {
+						"x": 1,
+						"y": 131,
+						"w": 33,
+						"h": 44
+					}
+				}
+			]
+		}
+	],
+	"meta": {
+		"app": "http://free-tex-packer.com",
+		"version": "0.6.7"
+	}
+}
