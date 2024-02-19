@@ -5,6 +5,7 @@ import {
   fireKnightAttackMelee,
   fireKnightIdle,
   fireKnightRun,
+  mageIdle,
   rangerAttackRanged,
   rangerAttackRangedObject,
   rangerIdle,
@@ -122,6 +123,7 @@ export class PreloadScene extends Phaser.Scene {
     this.load.image(battleBackground1, './assets/images/battle-bg/1.png');
     this.loadFireKnight();
     this.loadRanger();
+    this.loadMage();
   }
 
   private loadFireKnight(): void {
@@ -157,6 +159,14 @@ export class PreloadScene extends Phaser.Scene {
       rangerAttackRangedObject,
       './assets/images/characters/ranger/ranger_attack_ranged_object.png',
       './assets/images/characters/ranger/ranger_attack_ranged_object.json'
+    );
+  }
+
+  private loadMage(): void {
+    this.load.atlas(
+      mageIdle,
+      './assets/images/characters/mage/mage_idle.png',
+      './assets/images/characters/mage/mage_idle.json'
     );
   }
 }

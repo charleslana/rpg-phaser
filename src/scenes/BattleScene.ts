@@ -13,6 +13,7 @@ export class BattleScene extends Phaser.Scene {
   private enemies: Character[] = [];
   private player: Character;
   private player2: Character;
+  private player3: Character;
   private enemy: Character;
   private speed = 1;
 
@@ -71,6 +72,7 @@ export class BattleScene extends Phaser.Scene {
   private loadPlayer(): void {
     this.player = new Character(this, 200, 400);
     this.player2 = new Character(this, 200, 400);
+    this.player3 = new Character(this, 200, 400);
   }
 
   private loadEnemy(): void {
@@ -88,8 +90,9 @@ export class BattleScene extends Phaser.Scene {
   private createPlayer(): void {
     this.player.createCharacter({ characterId: 1, slot: 1 });
     this.player2.createCharacter({ characterId: 2, slot: 3 });
+    this.player3.createCharacter({ characterId: 3, slot: 5 });
     this.players = [];
-    this.players.push(this.player, this.player2);
+    this.players.push(this.player, this.player2, this.player3);
   }
 
   private createEnemy(): void {

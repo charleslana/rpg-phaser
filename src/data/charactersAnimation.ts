@@ -3,6 +3,7 @@ import {
   fireKnightAttackMelee,
   fireKnightIdle,
   fireKnightRun,
+  mageIdle,
   rangerAttackRanged,
   rangerAttackRangedObject,
   rangerIdle,
@@ -110,5 +111,23 @@ export const characterRanger: ICharacterAnimation = {
     frames: [{ key: rangerAttackRangedObject, frame: 'arrow_.png' }],
     frameRate: 1,
     frameRateStart: 1,
+  },
+};
+
+export const characterMage: ICharacterAnimation = {
+  scaleX: 1.2,
+  idle: {
+    key: mageIdle,
+    frames: [
+      { key: mageIdle, frame: '1.png' },
+      { key: mageIdle, frame: '2.png' },
+      { key: mageIdle, frame: '3.png' },
+      { key: mageIdle, frame: '4.png' },
+      { key: mageIdle, frame: '5.png' },
+      { key: mageIdle, frame: '6.png' },
+    ],
+    frameRate: 7,
+    frameRateStart: 7,
+    repeat: -1,
   },
 };

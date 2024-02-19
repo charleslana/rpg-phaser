@@ -7,3 +7,5 @@ export const fireKnightAttackMelee = 'fireKnightAttackMelee';
 export const rangerIdle = 'rangerIdle';
 export const rangerAttackRanged = 'rangerAttackRanged';
 export const rangerAttackRangedObject = 'rangerAttackRangedObject';
+
+export const mageIdle = 'mageIdle';
