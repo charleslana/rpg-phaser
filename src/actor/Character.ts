@@ -61,6 +61,13 @@ export class Character extends Phaser.Physics.Arcade.Sprite {
     return this.sprite.anims.currentAnim!.duration;
   }
 
+  public changeAttackAreaAnimation(speed: number): number {
+    this.sprite.anims.play(this.characterAnimation.attackArea!.key);
+    this.setupSprite();
+    this.updateAnimationSpeed(speed);
+    return this.sprite.anims.currentAnim!.duration;
+  }
+
   public enableAttackRangedObjectAnimation(speed: number, isFlip = false): number {
     this.spriteObject = this.scene.physics.add.sprite(
       this.x,
@@ -128,31 +135,33 @@ export class Character extends Phaser.Physics.Arcade.Sprite {
     this.createAttackMeleeAnimation(characterAnimation);
     this.createAttackRangedAnimation(characterAnimation);
     this.createAttackRangedObjectAnimation(characterAnimation);
+    this.createAttackAreaAnimation(characterAnimation);
+    this.createAttackAreaObjectAnimation(characterAnimation);
   }
 
   private createIdleAnimation(characterAnimation: ICharacterAnimation): void {
     if (!this.scene.anims.exists(characterAnimation.idle!.key)) {
-      const idle = this.scene.anims.create({
+      const animation = this.scene.anims.create({
         key: characterAnimation.idle!.key,
         frames: characterAnimation.idle!.frames,
         frameRate: characterAnimation.idle!.frameRate,
         repeat: characterAnimation.idle!.repeat,
         yoyo: characterAnimation.idle!.yoyo,
       }) as IAnimation;
-      idle.frameRateStart = characterAnimation.idle!.frameRateStart!;
+      animation.frameRateStart = characterAnimation.idle!.frameRateStart!;
     }
   }
 
   private createRunAnimation(characterAnimation: ICharacterAnimation): void {
     if (characterAnimation.run && !this.scene.anims.exists(characterAnimation.run.key)) {
-      const run = this.scene.anims.create({
+      const animation = this.scene.anims.create({
         key: characterAnimation.run.key,
         frames: characterAnimation.run.frames,
         frameRate: characterAnimation.run.frameRate,
         repeat: characterAnimation.run.repeat,
         yoyo: characterAnimation.run.yoyo,
       }) as IAnimation;
-      run.frameRateStart = characterAnimation.run.frameRateStart!;
+      animation.frameRateStart = characterAnimation.run.frameRateStart!;
     }
   }
 
@@ -161,14 +170,14 @@ export class Character extends Phaser.Physics.Arcade.Sprite {
       characterAnimation.attackMelee &&
       !this.scene.anims.exists(characterAnimation.attackMelee.key)
     ) {
-      const attackMelee = this.scene.anims.create({
+      const animation = this.scene.anims.create({
         key: characterAnimation.attackMelee.key,
         frames: characterAnimation.attackMelee.frames,
         frameRate: characterAnimation.attackMelee.frameRate,
         repeat: characterAnimation.attackMelee.repeat,
         yoyo: characterAnimation.attackMelee.yoyo,
       }) as IAnimation;
-      attackMelee.frameRateStart = characterAnimation.attackMelee.frameRateStart!;
+      animation.frameRateStart = characterAnimation.attackMelee.frameRateStart!;
     }
   }
 
@@ -177,14 +186,14 @@ export class Character extends Phaser.Physics.Arcade.Sprite {
       characterAnimation.attackRanged &&
       !this.scene.anims.exists(characterAnimation.attackRanged.key)
     ) {
-      const attackMelee = this.scene.anims.create({
+      const animation = this.scene.anims.create({
         key: characterAnimation.attackRanged.key,
         frames: characterAnimation.attackRanged.frames,
         frameRate: characterAnimation.attackRanged.frameRate,
         repeat: characterAnimation.attackRanged.repeat,
         yoyo: characterAnimation.attackRanged.yoyo,
       }) as IAnimation;
-      attackMelee.frameRateStart = characterAnimation.attackRanged.frameRateStart!;
+      animation.frameRateStart = characterAnimation.attackRanged.frameRateStart!;
     }
   }
 
@@ -193,14 +202,46 @@ export class Character extends Phaser.Physics.Arcade.Sprite {
       characterAnimation.attackRangedObject &&
       !this.scene.anims.exists(characterAnimation.attackRangedObject.key)
     ) {
-      const attackMelee = this.scene.anims.create({
+      const animation = this.scene.anims.create({
         key: characterAnimation.attackRangedObject.key,
         frames: characterAnimation.attackRangedObject.frames,
         frameRate: characterAnimation.attackRangedObject.frameRate,
         repeat: characterAnimation.attackRangedObject.repeat,
         yoyo: characterAnimation.attackRangedObject.yoyo,
       }) as IAnimation;
-      attackMelee.frameRateStart = characterAnimation.attackRangedObject.frameRateStart!;
+      animation.frameRateStart = characterAnimation.attackRangedObject.frameRateStart!;
+    }
+  }
+
+  private createAttackAreaAnimation(characterAnimation: ICharacterAnimation): void {
+    if (
+      characterAnimation.attackArea &&
+      !this.scene.anims.exists(characterAnimation.attackArea.key)
+    ) {
+      const animation = this.scene.anims.create({
+        key: characterAnimation.attackArea.key,
+        frames: characterAnimation.attackArea.frames,
+        frameRate: characterAnimation.attackArea.frameRate,
+        repeat: characterAnimation.attackArea.repeat,
+        yoyo: characterAnimation.attackArea.yoyo,
+      }) as IAnimation;
+      animation.frameRateStart = characterAnimation.attackArea.frameRateStart!;
+    }
+  }
+
+  private createAttackAreaObjectAnimation(characterAnimation: ICharacterAnimation): void {
+    if (
+      characterAnimation.attackAreaObject &&
+      !this.scene.anims.exists(characterAnimation.attackAreaObject.key)
+    ) {
+      const animation = this.scene.anims.create({
+        key: characterAnimation.attackAreaObject.key,
+        frames: characterAnimation.attackAreaObject.frames,
+        frameRate: characterAnimation.attackAreaObject.frameRate,
+        repeat: characterAnimation.attackAreaObject.repeat,
+        yoyo: characterAnimation.attackAreaObject.yoyo,
+      }) as IAnimation;
+      animation.frameRateStart = characterAnimation.attackAreaObject.frameRateStart!;
     }
   }
 }

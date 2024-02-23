@@ -64,6 +64,9 @@ export class BattleScene extends Phaser.Scene {
     this.input.keyboard!.on('keydown-SIX', () => {
       this.moveObjectToEnemy();
     });
+    this.input.keyboard!.on('keydown-SEVEN', () => {
+      this.attackAreaEnemy();
+    });
     this.input.keyboard!.on('keydown-R', () => {
       this.scene.restart();
     });
@@ -157,6 +160,7 @@ export class BattleScene extends Phaser.Scene {
 
   private moveObjectToEnemy(): void {
     const dodge = true;
+    this.player2.statusBar.hide();
     const duration = this.player2.changeAttackRangedAnimation(this.speed);
     if (this.player2.characterAnimation.attackRanged!.isInitObject) {
       this.player2.enableAttackRangedObjectAnimation(this.speed);
@@ -181,12 +185,17 @@ export class BattleScene extends Phaser.Scene {
           } else {
             this.enemy.damage.enableDodgeText(this.speed);
           }
+          this.player2.statusBar.show();
           this.player2.spriteObject.destroy();
           this.player2.changeIdleAnimation(this.speed);
         },
       };
       this.tweens.add(tweenConfig);
     });
+  }
+
+  private attackAreaEnemy(): void {
+    this.player3.changeAttackAreaAnimation(this.speed);
   }
 
   private createChangeSpeedButton(): void {

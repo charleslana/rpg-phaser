@@ -5,6 +5,8 @@ import {
   fireKnightAttackMelee,
   fireKnightIdle,
   fireKnightRun,
+  mageAttackArea,
+  mageAttackAreaObject,
   mageIdle,
   rangerAttackRanged,
   rangerAttackRangedObject,
@@ -167,6 +169,16 @@ export class PreloadScene extends Phaser.Scene {
       mageIdle,
       './assets/images/characters/mage/mage_idle.png',
       './assets/images/characters/mage/mage_idle.json'
+    );
+    this.load.atlas(
+      mageAttackArea,
+      './assets/images/characters/mage/mage_area.png',
+      './assets/images/characters/mage/mage_area.json'
+    );
+    this.load.atlas(
+      mageAttackAreaObject,
+      './assets/images/characters/mage/mage_area_object.png',
+      './assets/images/characters/mage/mage_area_object.json'
     );
   }
 }

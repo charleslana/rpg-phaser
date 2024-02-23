@@ -9,3 +9,5 @@ export const rangerAttackRanged = 'rangerAttackRanged';
 export const rangerAttackRangedObject = 'rangerAttackRangedObject';
 
 export const mageIdle = 'mageIdle';
+export const mageAttackArea = 'mageArea';
+export const mageAttackAreaObject = 'mageAttackAreaObject';

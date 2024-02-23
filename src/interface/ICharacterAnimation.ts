@@ -9,11 +9,11 @@ interface AnimationFrame {
   yoyo?: boolean;
 }
 
-interface AttackRangedAnimationFrame extends AnimationFrame {
+interface AttackAnimationFrame extends AnimationFrame {
   isInitObject?: boolean;
 }
 
-interface AttackRangedObjectAnimationFrame extends AnimationFrame {
+interface AttackObjectAnimationFrame extends AnimationFrame {
   scale?: number;
   positionX?: number;
   positionY?: number;
@@ -24,6 +24,8 @@ export interface ICharacterAnimation {
   idle?: AnimationFrame;
   run?: AnimationFrame;
   attackMelee?: AnimationFrame;
-  attackRanged?: AttackRangedAnimationFrame;
-  attackRangedObject?: AttackRangedObjectAnimationFrame;
+  attackRanged?: AttackAnimationFrame;
+  attackRangedObject?: AttackObjectAnimationFrame;
+  attackArea?: AttackAnimationFrame;
+  attackAreaObject?: AttackObjectAnimationFrame;
 }

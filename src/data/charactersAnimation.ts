@@ -3,6 +3,8 @@ import {
   fireKnightAttackMelee,
   fireKnightIdle,
   fireKnightRun,
+  mageAttackArea,
+  mageAttackAreaObject,
   mageIdle,
   rangerAttackRanged,
   rangerAttackRangedObject,
@@ -130,4 +132,25 @@ export const characterMage: ICharacterAnimation = {
     frameRateStart: 7,
     repeat: -1,
   },
+  attackArea: {
+    key: mageAttackArea,
+    frames: generateFrameNumbers(mageAttackArea, 1, 8),
+    frameRate: 10,
+    frameRateStart: 10,
+  },
+  attackAreaObject: {
+    key: mageAttackAreaObject,
+    frames: generateFrameNumbers(mageAttackAreaObject, 0, 81, 4, 'frame'),
+    frameRate: 40,
+    frameRateStart: 40,
+  },
 };
+
+function generateFrameNumbers(key: string, start: number, end: number, zeroPad = 0, text = '') {
+  const frames = [];
+  for (let i = start; i <= end; i++) {
+    const frame = `${text}${i.toString().padStart(zeroPad, '0')}.png`;
+    frames.push({ key, frame });
+  }
+  return frames;
+}
