@@ -67,6 +67,9 @@ export class BattleScene extends Phaser.Scene {
     this.input.keyboard!.on('keydown-SEVEN', () => {
       this.attackAreaEnemy();
     });
+    this.input.keyboard!.on('keydown-EIGHT', () => {
+      this.player3.enableAttackAreaObjectAnimation(this.speed);
+    });
     this.input.keyboard!.on('keydown-R', () => {
       this.scene.restart();
     });
@@ -231,6 +234,8 @@ export class BattleScene extends Phaser.Scene {
     }
     buttonText.text = `${this.speed}x`;
     this.player.updateAnimationSpeed(this.speed);
+    this.player2.updateAnimationSpeed(this.speed);
+    this.player3.updateAnimationSpeed(this.speed);
     this.enemy.updateAnimationSpeed(this.speed);
     saveSpeed(this.speed.toString());
   }

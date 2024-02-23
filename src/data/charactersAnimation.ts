@@ -139,10 +139,13 @@ export const characterMage: ICharacterAnimation = {
     frameRateStart: 10,
   },
   attackAreaObject: {
+    scale: 3.5,
+    positionX: 1000,
+    positionY: 500,
     key: mageAttackAreaObject,
     frames: generateFrameNumbers(mageAttackAreaObject, 0, 81, 4, 'frame'),
-    frameRate: 40,
-    frameRateStart: 40,
+    frameRate: 50,
+    frameRateStart: 50,
   },
 };
 

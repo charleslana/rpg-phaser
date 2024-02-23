@@ -92,6 +92,30 @@ export class Character extends Phaser.Physics.Arcade.Sprite {
     return this.spriteObject.anims.currentAnim!.duration;
   }
 
+  public enableAttackAreaObjectAnimation(speed: number, isFlip = false): number {
+    this.spriteObject = this.scene.physics.add.sprite(
+      this.characterAnimation.attackAreaObject!.positionX!,
+      this.characterAnimation.attackAreaObject!.positionY!,
+      this.characterAnimation.attackAreaObject!.key
+    );
+    this.spriteObject.setScale(this.characterAnimation.attackAreaObject!.scale);
+    this.spriteObject.anims.play(this.characterAnimation.attackAreaObject!.key);
+    this.spriteObject.setCollideWorldBounds(true);
+    if (isFlip) {
+      this.spriteObject.setOrigin(0, 1);
+    } else {
+      this.spriteObject.setOrigin(1, 1);
+    }
+    this.spriteObject.setFlipX(isFlip);
+    this.sprite.setDepth(1);
+    const currentAnimation = this.spriteObject.anims.currentAnim as IAnimation;
+    if (currentAnimation) {
+      currentAnimation.frameRate = currentAnimation.frameRateStart * speed;
+      this.spriteObject.anims.play(currentAnimation.key);
+    }
+    return this.spriteObject.anims.currentAnim!.duration;
+  }
+
   public blinkSprite(speed: number): void {
     const tween = this.scene.tweens.add({
       targets: this.sprite,
