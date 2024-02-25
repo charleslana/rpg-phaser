@@ -70,7 +70,7 @@ export class Character extends Phaser.Physics.Arcade.Sprite {
 
   public enableAttackRangedObjectAnimation(speed: number, isFlip = false): number {
     this.spriteObject = this.scene.physics.add.sprite(
-      this.x,
+      this.x + this.characterAnimation.attackRangedObject!.positionX!,
       this.y + this.characterAnimation.attackRangedObject!.positionY!,
       this.characterAnimation.attackRangedObject!.key
     );
@@ -140,7 +140,6 @@ export class Character extends Phaser.Physics.Arcade.Sprite {
   }
 
   private setupSprite(isFlip = false): void {
-    this.sprite.setCollideWorldBounds(true);
     this.sprite.setScale(this.characterAnimation.scaleX);
     if (isFlip) {
       this.sprite.setOrigin(0, 1);

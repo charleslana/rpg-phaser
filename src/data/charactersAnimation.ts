@@ -109,6 +109,7 @@ export const characterRanger: ICharacterAnimation = {
   attackRangedObject: {
     scale: 2,
     positionY: -65,
+    positionX: 65,
     key: rangerAttackRangedObject,
     frames: [{ key: rangerAttackRangedObject, frame: 'arrow_.png' }],
     frameRate: 1,
@@ -144,8 +145,8 @@ export const characterMage: ICharacterAnimation = {
     positionY: 500,
     key: mageAttackAreaObject,
     frames: generateFrameNumbers(mageAttackAreaObject, 0, 81, 4, 'frame'),
-    frameRate: 50,
-    frameRateStart: 50,
+    frameRate: 60,
+    frameRateStart: 60,
   },
 };
 

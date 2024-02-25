@@ -15,6 +15,7 @@ export class BattleScene extends Phaser.Scene {
   private player2: Character;
   private player3: Character;
   private enemy: Character;
+  private enemy2: Character;
   private speed = 1;
 
   preload(): void {
@@ -83,6 +84,7 @@ export class BattleScene extends Phaser.Scene {
 
   private loadEnemy(): void {
     this.enemy = new Character(this, 200, 400);
+    this.enemy2 = new Character(this, 200, 400);
     this.updateEnemyPosition();
   }
 
@@ -103,8 +105,9 @@ export class BattleScene extends Phaser.Scene {
 
   private createEnemy(): void {
     this.enemy.createCharacter({ characterId: 2, slot: 2, isFlip: true });
+    this.enemy2.createCharacter({ characterId: 1, slot: 1, isFlip: true });
     this.enemies = [];
-    this.enemies.push(this.enemy);
+    this.enemies.push(this.enemy, this.enemy2);
   }
 
   private createMovePlayer(): void {
@@ -172,6 +175,8 @@ export class BattleScene extends Phaser.Scene {
       if (!this.player2.characterAnimation.attackRanged!.isInitObject) {
         this.player2.enableAttackRangedObjectAnimation(this.speed);
       }
+      this.player2.changeIdleAnimation(this.speed);
+      this.player2.statusBar.show();
       const destinationX = this.enemy.x + this.enemy.width * 2;
       const tweenConfig: Phaser.Types.Tweens.TweenBuilderConfig = {
         targets: this.player2.spriteObject,
@@ -188,9 +193,7 @@ export class BattleScene extends Phaser.Scene {
           } else {
             this.enemy.damage.enableDodgeText(this.speed);
           }
-          this.player2.statusBar.show();
           this.player2.spriteObject.destroy();
-          this.player2.changeIdleAnimation(this.speed);
         },
       };
       this.tweens.add(tweenConfig);
@@ -198,7 +201,31 @@ export class BattleScene extends Phaser.Scene {
   }
 
   private attackAreaEnemy(): void {
-    this.player3.changeAttackAreaAnimation(this.speed);
+    this.player3.statusBar.hide();
+    const duration = this.player3.changeAttackAreaAnimation(this.speed);
+    if (this.player3.characterAnimation.attackArea!.isInitObject) {
+      this.player3.enableAttackAreaObjectAnimation(this.speed);
+    }
+    this.time.delayedCall(duration / this.speed, () => {
+      let durationArea = 0;
+      if (!this.player3.characterAnimation.attackArea!.isInitObject) {
+        durationArea = this.player3.enableAttackAreaObjectAnimation(this.speed);
+      }
+      this.player3.changeIdleAnimation(this.speed);
+      this.player3.statusBar.show();
+      this.time.delayedCall(durationArea / this.speed, () => {
+        this.player3.spriteObject.setDepth(2);
+        this.enemies.forEach((enemy, index) => {
+          enemy.blinkSprite(this.speed);
+          enemy.statusBar.updateHPWithAnimation(25, 100, this.speed);
+          enemy.damage.changeDamageText('-25', this.speed);
+          if (index === 0) {
+            enemy.damage.enableCriticalText(this.speed);
+          }
+        });
+        this.player3.spriteObject.destroy();
+      });
+    });
   }
 
   private createChangeSpeedButton(): void {
