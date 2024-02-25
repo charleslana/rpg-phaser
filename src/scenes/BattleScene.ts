@@ -286,6 +286,8 @@ export class BattleScene extends Phaser.Scene {
     this.player2.updateAnimationSpeed(this.speed);
     this.player3.updateAnimationSpeed(this.speed);
     this.enemy.updateAnimationSpeed(this.speed);
+    this.enemy2.updateAnimationSpeed(this.speed);
+    this.enemy3.updateAnimationSpeed(this.speed);
     saveSpeed(this.speed.toString());
   }
 
