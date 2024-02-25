@@ -17,12 +17,14 @@ export class Character extends Phaser.Physics.Arcade.Sprite {
   public damage: Damage;
   public spriteObject: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;
   public characterAnimation: ICharacterAnimation;
+  public isFlip: boolean;
 
   public createCharacter(battleCharacter: IBattleCharacter): void {
     this.characterAnimation = getCharacterAnimation(battleCharacter.characterId);
     this.createAnimations(battleCharacter.characterId);
     this.sprite = this.scene.physics.add.sprite(this.x, this.y, this.characterAnimation.idle!.key);
-    this.setupSprite(battleCharacter.isFlip);
+    this.isFlip = battleCharacter.isFlip ?? false;
+    this.setupSprite();
     this.slot = battleCharacter.slot;
     this.sprite.anims.play(this.characterAnimation.idle!.key, true);
   }
@@ -68,21 +70,24 @@ export class Character extends Phaser.Physics.Arcade.Sprite {
     return this.sprite.anims.currentAnim!.duration;
   }
 
-  public enableAttackRangedObjectAnimation(speed: number, isFlip = false): number {
+  public enableAttackRangedObjectAnimation(speed: number): number {
+    const x = this.isFlip
+      ? this.x - this.characterAnimation.attackRangedObject!.positionX!
+      : this.x + this.characterAnimation.attackRangedObject!.positionX!;
     this.spriteObject = this.scene.physics.add.sprite(
-      this.x + this.characterAnimation.attackRangedObject!.positionX!,
+      x,
       this.y + this.characterAnimation.attackRangedObject!.positionY!,
       this.characterAnimation.attackRangedObject!.key
     );
     this.spriteObject.setScale(this.characterAnimation.attackRangedObject!.scale);
     this.spriteObject.anims.play(this.characterAnimation.attackRangedObject!.key);
     this.spriteObject.setCollideWorldBounds(true);
-    if (isFlip) {
+    if (this.isFlip) {
       this.spriteObject.setOrigin(0, 1);
     } else {
       this.spriteObject.setOrigin(1, 1);
     }
-    this.spriteObject.setFlipX(isFlip);
+    this.spriteObject.setFlipX(this.isFlip);
     this.sprite.setDepth(1);
     const currentAnimation = this.spriteObject.anims.currentAnim as IAnimation;
     if (currentAnimation) {
@@ -92,21 +97,28 @@ export class Character extends Phaser.Physics.Arcade.Sprite {
     return this.spriteObject.anims.currentAnim!.duration;
   }
 
-  public enableAttackAreaObjectAnimation(speed: number, isFlip = false): number {
+  public enableAttackAreaObjectAnimation(speed: number): number {
+    const distanceFromRightEdge = this.characterAnimation.attackAreaObject!.positionX!;
+    let x: number;
+    if (!this.isFlip) {
+      x = this.scene.cameras.main.width - distanceFromRightEdge;
+    } else {
+      x = distanceFromRightEdge;
+    }
     this.spriteObject = this.scene.physics.add.sprite(
-      this.characterAnimation.attackAreaObject!.positionX!,
+      x,
       this.characterAnimation.attackAreaObject!.positionY!,
       this.characterAnimation.attackAreaObject!.key
     );
     this.spriteObject.setScale(this.characterAnimation.attackAreaObject!.scale);
     this.spriteObject.anims.play(this.characterAnimation.attackAreaObject!.key);
     this.spriteObject.setCollideWorldBounds(true);
-    if (isFlip) {
+    if (this.isFlip) {
       this.spriteObject.setOrigin(0, 1);
     } else {
       this.spriteObject.setOrigin(1, 1);
     }
-    this.spriteObject.setFlipX(isFlip);
+    this.spriteObject.setFlipX(this.isFlip);
     this.sprite.setDepth(1);
     const currentAnimation = this.spriteObject.anims.currentAnim as IAnimation;
     if (currentAnimation) {
@@ -139,14 +151,14 @@ export class Character extends Phaser.Physics.Arcade.Sprite {
     this.damage.createDamageText(isFlip);
   }
 
-  private setupSprite(isFlip = false): void {
+  private setupSprite(): void {
     this.sprite.setScale(this.characterAnimation.scaleX);
-    if (isFlip) {
+    if (this.isFlip) {
       this.sprite.setOrigin(0, 1);
     } else {
       this.sprite.setOrigin(1, 1);
     }
-    this.sprite.setFlipX(isFlip);
+    this.sprite.setFlipX(this.isFlip);
     this.sprite.setDepth(1);
     this.sprite.body.setSize(this.sprite.width, this.sprite.height);
   }

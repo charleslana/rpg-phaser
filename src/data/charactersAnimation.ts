@@ -141,7 +141,7 @@ export const characterMage: ICharacterAnimation = {
   },
   attackAreaObject: {
     scale: 3.5,
-    positionX: 1000,
+    positionX: 25,
     positionY: 500,
     key: mageAttackAreaObject,
     frames: generateFrameNumbers(mageAttackAreaObject, 0, 81, 4, 'frame'),

@@ -16,6 +16,7 @@ export class BattleScene extends Phaser.Scene {
   private player3: Character;
   private enemy: Character;
   private enemy2: Character;
+  private enemy3: Character;
   private speed = 1;
 
   preload(): void {
@@ -62,17 +63,26 @@ export class BattleScene extends Phaser.Scene {
     this.input.keyboard!.on('keydown-FIVE', () => {
       this.player2.enableAttackRangedObjectAnimation(this.speed);
     });
-    this.input.keyboard!.on('keydown-SIX', () => {
-      this.moveObjectToEnemy();
+    this.input.keyboard!.on('keydown-S', () => {
+      this.moveObjectTo(this.player2, this.enemy);
     });
-    this.input.keyboard!.on('keydown-SEVEN', () => {
-      this.attackAreaEnemy();
+    this.input.keyboard!.on('keydown-D', () => {
+      this.attackArea(this.player3, this.enemies);
     });
     this.input.keyboard!.on('keydown-EIGHT', () => {
       this.player3.enableAttackAreaObjectAnimation(this.speed);
     });
     this.input.keyboard!.on('keydown-R', () => {
       this.scene.restart();
+    });
+    this.input.keyboard!.on('keydown-NUMPAD_ONE', () => {
+      this.moveTo(this.enemy2, this.player);
+    });
+    this.input.keyboard!.on('keydown-NUMPAD_TWO', () => {
+      this.moveObjectTo(this.enemy, this.player2);
+    });
+    this.input.keyboard!.on('keydown-NUMPAD_THREE', () => {
+      this.attackArea(this.enemy3, this.players);
     });
   }
 
@@ -85,6 +95,7 @@ export class BattleScene extends Phaser.Scene {
   private loadEnemy(): void {
     this.enemy = new Character(this, 200, 400);
     this.enemy2 = new Character(this, 200, 400);
+    this.enemy3 = new Character(this, 200, 400);
     this.updateEnemyPosition();
   }
 
@@ -106,124 +117,135 @@ export class BattleScene extends Phaser.Scene {
   private createEnemy(): void {
     this.enemy.createCharacter({ characterId: 2, slot: 2, isFlip: true });
     this.enemy2.createCharacter({ characterId: 1, slot: 1, isFlip: true });
+    this.enemy3.createCharacter({ characterId: 3, slot: 4, isFlip: true });
     this.enemies = [];
-    this.enemies.push(this.enemy, this.enemy2);
+    this.enemies.push(this.enemy, this.enemy2, this.enemy3);
   }
 
   private createMovePlayer(): void {
     this.input.keyboard!.on('keydown-A', () => {
-      this.moveToEnemy();
+      this.moveTo(this.player, this.enemy);
     });
   }
 
-  private moveToEnemy(): void {
+  private moveTo(from: Character, to: Character): void {
     const dodge = false;
-    this.player.statusBar.hide();
-    this.player.changeRunAnimation(this.speed);
-    const destinationX = this.enemy.x + this.enemy.width * 2;
+    from.statusBar.hide();
+    from.changeRunAnimation(this.speed);
+    let destinationX = 0;
+    if (from.isFlip) {
+      destinationX = to.x - to.width * 2;
+    } else {
+      destinationX = to.x + to.width * 2;
+    }
     const tweenConfig: Phaser.Types.Tweens.TweenBuilderConfig = {
-      targets: this.player.sprite,
+      targets: from.sprite,
       x: destinationX,
-      y: this.enemy.y,
+      y: to.y,
       duration: 500 / this.speed,
       onComplete: () => {
-        const duration = this.player.changeAttackMeleeAnimation(this.speed);
-        this.player.sprite.setDepth(2);
+        const duration = from.changeAttackMeleeAnimation(this.speed);
+        from.sprite.setDepth(2);
         this.time.delayedCall(duration / this.speed, () => {
           if (!dodge) {
-            this.enemy.blinkSprite(this.speed);
-            this.enemy.statusBar.updateHPWithAnimation(50, 200, this.speed);
-            this.enemy.damage.changeDamageText('-75', this.speed);
-            this.enemy.damage.enableCriticalText(this.speed);
+            to.blinkSprite(this.speed);
+            to.statusBar.updateHPWithAnimation(50, 200, this.speed);
+            to.damage.changeDamageText('-75', this.speed);
+            to.damage.enableCriticalText(this.speed);
           } else {
-            this.enemy.damage.enableDodgeText(this.speed);
+            to.damage.enableDodgeText(this.speed);
           }
-          this.player.changeRunAnimation(this.speed);
-          this.player.sprite.setFlipX(true);
-          this.playerReturnToStartPosition();
+          from.changeRunAnimation(this.speed);
+          from.sprite.toggleFlipX();
+          this.fromReturnToStartPosition(from);
         });
       },
     };
     this.tweens.add(tweenConfig);
   }
 
-  private playerReturnToStartPosition(): void {
+  private fromReturnToStartPosition(from: Character): void {
     const tweenConfig: Phaser.Types.Tweens.TweenBuilderConfig = {
-      targets: this.player.sprite,
-      x: this.player.x,
-      y: this.player.y,
+      targets: from.sprite,
+      x: from.x,
+      y: from.y,
       duration: 500 / this.speed,
       onComplete: () => {
-        this.player.sprite.depth--;
-        this.player.sprite.setFlipX(false);
-        this.player.changeIdleAnimation(this.speed);
-        this.player.statusBar.show();
-        this.player.statusBar.updateMPWithAnimation(25, 100, this.speed);
+        from.sprite.depth--;
+        from.sprite.toggleFlipX();
+        from.changeIdleAnimation(this.speed);
+        from.statusBar.show();
+        from.statusBar.updateMPWithAnimation(25, 100, this.speed);
       },
     };
     this.tweens.add(tweenConfig);
   }
 
-  private moveObjectToEnemy(): void {
+  private moveObjectTo(from: Character, to: Character): void {
     const dodge = true;
-    this.player2.statusBar.hide();
-    const duration = this.player2.changeAttackRangedAnimation(this.speed);
-    if (this.player2.characterAnimation.attackRanged!.isInitObject) {
-      this.player2.enableAttackRangedObjectAnimation(this.speed);
+    from.statusBar.hide();
+    const duration = from.changeAttackRangedAnimation(this.speed);
+    if (from.characterAnimation.attackRanged!.isInitObject) {
+      from.enableAttackRangedObjectAnimation(this.speed);
     }
     this.time.delayedCall(duration / this.speed, () => {
-      if (!this.player2.characterAnimation.attackRanged!.isInitObject) {
-        this.player2.enableAttackRangedObjectAnimation(this.speed);
+      if (!from.characterAnimation.attackRanged!.isInitObject) {
+        from.enableAttackRangedObjectAnimation(this.speed);
       }
-      this.player2.changeIdleAnimation(this.speed);
-      this.player2.statusBar.show();
-      const destinationX = this.enemy.x + this.enemy.width * 2;
+      from.changeIdleAnimation(this.speed);
+      from.statusBar.show();
+      let destinationX = 0;
+      if (from.isFlip) {
+        destinationX = to.x - to.width * 2;
+      } else {
+        destinationX = to.x + to.width * 2;
+      }
       const tweenConfig: Phaser.Types.Tweens.TweenBuilderConfig = {
-        targets: this.player2.spriteObject,
+        targets: from.spriteObject,
         x: destinationX,
-        y: this.enemy.y,
+        y: to.y,
         duration: 500 / this.speed,
         onComplete: () => {
-          this.player2.spriteObject.setDepth(2);
+          from.spriteObject.setDepth(2);
           if (!dodge) {
-            this.enemy.blinkSprite(this.speed);
-            this.enemy.statusBar.updateHPWithAnimation(50, 200, this.speed);
-            this.enemy.damage.changeDamageText('-75', this.speed);
-            this.enemy.damage.enableCriticalText(this.speed);
+            to.blinkSprite(this.speed);
+            to.statusBar.updateHPWithAnimation(50, 200, this.speed);
+            to.damage.changeDamageText('-75', this.speed);
+            to.damage.enableCriticalText(this.speed);
           } else {
-            this.enemy.damage.enableDodgeText(this.speed);
+            to.damage.enableDodgeText(this.speed);
           }
-          this.player2.spriteObject.destroy();
+          from.spriteObject.destroy();
         },
       };
       this.tweens.add(tweenConfig);
     });
   }
 
-  private attackAreaEnemy(): void {
-    this.player3.statusBar.hide();
-    const duration = this.player3.changeAttackAreaAnimation(this.speed);
-    if (this.player3.characterAnimation.attackArea!.isInitObject) {
-      this.player3.enableAttackAreaObjectAnimation(this.speed);
+  private attackArea(from: Character, toList: Character[]): void {
+    from.statusBar.hide();
+    const duration = from.changeAttackAreaAnimation(this.speed);
+    if (from.characterAnimation.attackArea!.isInitObject) {
+      from.enableAttackAreaObjectAnimation(this.speed);
     }
     this.time.delayedCall(duration / this.speed, () => {
       let durationArea = 0;
-      if (!this.player3.characterAnimation.attackArea!.isInitObject) {
-        durationArea = this.player3.enableAttackAreaObjectAnimation(this.speed);
+      if (!from.characterAnimation.attackArea!.isInitObject) {
+        durationArea = from.enableAttackAreaObjectAnimation(this.speed);
       }
-      this.player3.changeIdleAnimation(this.speed);
-      this.player3.statusBar.show();
+      from.changeIdleAnimation(this.speed);
+      from.statusBar.show();
       this.time.delayedCall(durationArea / this.speed, () => {
-        this.player3.spriteObject.setDepth(2);
-        this.enemies.forEach((enemy, index) => {
-          enemy.blinkSprite(this.speed);
-          enemy.statusBar.updateHPWithAnimation(25, 100, this.speed);
-          enemy.damage.changeDamageText('-25', this.speed);
+        from.spriteObject.setDepth(2);
+        toList.forEach((to, index) => {
+          to.blinkSprite(this.speed);
+          to.statusBar.updateHPWithAnimation(25, 100, this.speed);
+          to.damage.changeDamageText('-25', this.speed);
           if (index === 0) {
-            enemy.damage.enableCriticalText(this.speed);
+            to.damage.enableCriticalText(this.speed);
           }
         });
-        this.player3.spriteObject.destroy();
+        from.spriteObject.destroy();
       });
     });
   }
