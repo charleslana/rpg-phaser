@@ -70,6 +70,13 @@ export class Character extends Phaser.Physics.Arcade.Sprite {
     return this.sprite.anims.currentAnim!.duration;
   }
 
+  public changeAttackMeleeAreaAnimation(speed: number): number {
+    this.sprite.anims.play(this.characterAnimation.attackMeleeArea!.key);
+    this.setupSprite();
+    this.updateAnimationSpeed(speed);
+    return this.sprite.anims.currentAnim!.duration;
+  }
+
   public enableAttackRangedObjectAnimation(speed: number): number {
     const x = this.isFlip
       ? this.x - this.characterAnimation.attackRangedObject!.positionX!
@@ -112,6 +119,37 @@ export class Character extends Phaser.Physics.Arcade.Sprite {
     );
     this.spriteObject.setScale(this.characterAnimation.attackAreaObject!.scale);
     this.spriteObject.anims.play(this.characterAnimation.attackAreaObject!.key);
+    this.spriteObject.setCollideWorldBounds(true);
+    if (this.isFlip) {
+      this.spriteObject.setOrigin(0, 1);
+    } else {
+      this.spriteObject.setOrigin(1, 1);
+    }
+    this.spriteObject.setFlipX(this.isFlip);
+    this.sprite.setDepth(1);
+    const currentAnimation = this.spriteObject.anims.currentAnim as IAnimation;
+    if (currentAnimation) {
+      currentAnimation.frameRate = currentAnimation.frameRateStart * speed;
+      this.spriteObject.anims.play(currentAnimation.key);
+    }
+    return this.spriteObject.anims.currentAnim!.duration;
+  }
+
+  public enableAttackMeleeAreaObjectAnimation(speed: number): number {
+    const distanceFromRightEdge = this.characterAnimation.attackMeleeAreaObject!.positionX!;
+    let x: number;
+    if (!this.isFlip) {
+      x = this.scene.cameras.main.width - distanceFromRightEdge;
+    } else {
+      x = distanceFromRightEdge;
+    }
+    this.spriteObject = this.scene.physics.add.sprite(
+      x,
+      this.characterAnimation.attackMeleeAreaObject!.positionY!,
+      this.characterAnimation.attackMeleeAreaObject!.key
+    );
+    this.spriteObject.setScale(this.characterAnimation.attackMeleeAreaObject!.scale);
+    this.spriteObject.anims.play(this.characterAnimation.attackMeleeAreaObject!.key);
     this.spriteObject.setCollideWorldBounds(true);
     if (this.isFlip) {
       this.spriteObject.setOrigin(0, 1);
@@ -172,6 +210,8 @@ export class Character extends Phaser.Physics.Arcade.Sprite {
     this.createAttackRangedObjectAnimation(characterAnimation);
     this.createAttackAreaAnimation(characterAnimation);
     this.createAttackAreaObjectAnimation(characterAnimation);
+    this.createAttackMeleeAreaAnimation(characterAnimation);
+    this.createAttackMeleeAreaObjectAnimation(characterAnimation);
   }
 
   private createIdleAnimation(characterAnimation: ICharacterAnimation): void {
@@ -277,6 +317,38 @@ export class Character extends Phaser.Physics.Arcade.Sprite {
         yoyo: characterAnimation.attackAreaObject.yoyo,
       }) as IAnimation;
       animation.frameRateStart = characterAnimation.attackAreaObject.frameRateStart!;
+    }
+  }
+
+  private createAttackMeleeAreaAnimation(characterAnimation: ICharacterAnimation): void {
+    if (
+      characterAnimation.attackMeleeArea &&
+      !this.scene.anims.exists(characterAnimation.attackMeleeArea.key)
+    ) {
+      const animation = this.scene.anims.create({
+        key: characterAnimation.attackMeleeArea.key,
+        frames: characterAnimation.attackMeleeArea.frames,
+        frameRate: characterAnimation.attackMeleeArea.frameRate,
+        repeat: characterAnimation.attackMeleeArea.repeat,
+        yoyo: characterAnimation.attackMeleeArea.yoyo,
+      }) as IAnimation;
+      animation.frameRateStart = characterAnimation.attackMeleeArea.frameRateStart!;
+    }
+  }
+
+  private createAttackMeleeAreaObjectAnimation(characterAnimation: ICharacterAnimation): void {
+    if (
+      characterAnimation.attackMeleeAreaObject &&
+      !this.scene.anims.exists(characterAnimation.attackMeleeAreaObject.key)
+    ) {
+      const animation = this.scene.anims.create({
+        key: characterAnimation.attackMeleeAreaObject.key,
+        frames: characterAnimation.attackMeleeAreaObject.frames,
+        frameRate: characterAnimation.attackMeleeAreaObject.frameRate,
+        repeat: characterAnimation.attackMeleeAreaObject.repeat,
+        yoyo: characterAnimation.attackMeleeAreaObject.yoyo,
+      }) as IAnimation;
+      animation.frameRateStart = characterAnimation.attackMeleeAreaObject.frameRateStart!;
     }
   }
 }

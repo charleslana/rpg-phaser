@@ -1,5 +1,7 @@
 import { ICharacterAnimation } from '../interface/ICharacterAnimation';
 import {
+  fireKnightAttackArea,
+  fireKnightAttackAreaObject,
   fireKnightAttackMelee,
   fireKnightIdle,
   fireKnightRun,
@@ -62,6 +64,23 @@ export const characterFireKnight: ICharacterAnimation = {
     ],
     frameRate: 11,
     frameRateStart: 11,
+  },
+  attackMeleeArea: {
+    positionX: 360,
+    positionY: 390,
+    key: fireKnightAttackArea,
+    frames: generateFrameNumbers(fireKnightAttackArea, 1, 18),
+    frameRate: 11,
+    frameRateStart: 11,
+  },
+  attackMeleeAreaObject: {
+    scale: 4.5,
+    positionX: 125,
+    positionY: 480,
+    key: fireKnightAttackAreaObject,
+    frames: generateFrameNumbers(fireKnightAttackAreaObject, 1, 3),
+    frameRate: 10,
+    frameRateStart: 10,
   },
 };
 

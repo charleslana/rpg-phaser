@@ -63,14 +63,23 @@ export class BattleScene extends Phaser.Scene {
     this.input.keyboard!.on('keydown-FIVE', () => {
       this.player2.enableAttackRangedObjectAnimation(this.speed);
     });
+    this.input.keyboard!.on('keydown-SIX', () => {
+      this.player.changeAttackMeleeAreaAnimation(this.speed);
+    });
+    this.input.keyboard!.on('keydown-SEVEN', () => {
+      this.player.enableAttackMeleeAreaObjectAnimation(this.speed);
+    });
+    this.input.keyboard!.on('keydown-EIGHT', () => {
+      this.player3.enableAttackAreaObjectAnimation(this.speed);
+    });
     this.input.keyboard!.on('keydown-S', () => {
       this.moveObjectTo(this.player2, this.enemy);
     });
     this.input.keyboard!.on('keydown-D', () => {
       this.attackArea(this.player3, this.enemies);
     });
-    this.input.keyboard!.on('keydown-EIGHT', () => {
-      this.player3.enableAttackAreaObjectAnimation(this.speed);
+    this.input.keyboard!.on('keydown-F', () => {
+      this.attackMeleeArea(this.player, this.enemies);
     });
     this.input.keyboard!.on('keydown-R', () => {
       this.scene.restart();
@@ -83,6 +92,9 @@ export class BattleScene extends Phaser.Scene {
     });
     this.input.keyboard!.on('keydown-NUMPAD_THREE', () => {
       this.attackArea(this.enemy3, this.players);
+    });
+    this.input.keyboard!.on('keydown-NUMPAD_FOUR', () => {
+      this.attackMeleeArea(this.enemy2, this.players);
     });
   }
 
@@ -248,6 +260,50 @@ export class BattleScene extends Phaser.Scene {
         from.spriteObject.destroy();
       });
     });
+  }
+
+  private attackMeleeArea(from: Character, toList: Character[]): void {
+    from.statusBar.hide();
+    from.changeRunAnimation(this.speed);
+    const distanceFromRightEdge = from.characterAnimation.attackMeleeArea!.positionX!;
+    let destinationX: number;
+    if (!from.isFlip) {
+      destinationX = this.cameras.main.width - distanceFromRightEdge;
+    } else {
+      destinationX = distanceFromRightEdge;
+    }
+    const tweenConfig: Phaser.Types.Tweens.TweenBuilderConfig = {
+      targets: from.sprite,
+      x: destinationX,
+      y: from.characterAnimation.attackMeleeArea!.positionY!,
+      duration: 500 / this.speed,
+      onComplete: () => {
+        const duration = from.changeAttackMeleeAreaAnimation(this.speed);
+        if (from.characterAnimation.attackMeleeArea!.isInitObject) {
+          from.enableAttackMeleeAreaObjectAnimation(this.speed);
+        }
+        from.sprite.setDepth(2);
+        this.time.delayedCall(duration / this.speed, () => {
+          let durationArea = 0;
+          if (!from.characterAnimation.attackMeleeArea!.isInitObject) {
+            durationArea = from.enableAttackMeleeAreaObjectAnimation(this.speed);
+          }
+          this.time.delayedCall(durationArea / this.speed, () => {
+            toList.forEach(to => {
+              to.blinkSprite(this.speed);
+              to.statusBar.updateHPWithAnimation(50, 100, this.speed);
+              to.damage.changeDamageText('-50', this.speed);
+              to.damage.enableCriticalText(this.speed);
+            });
+            from.changeRunAnimation(this.speed);
+            from.sprite.toggleFlipX();
+            from.spriteObject.destroy();
+            this.fromReturnToStartPosition(from);
+          });
+        });
+      },
+    };
+    this.tweens.add(tweenConfig);
   }
 
   private createChangeSpeedButton(): void {

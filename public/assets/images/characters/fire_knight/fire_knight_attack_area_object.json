@@ -1,0 +1,82 @@
+{
+	"textures": [
+		{
+			"image": "fire_knight_attack_area_object",
+			"format": "RGBA8888",
+			"size": {
+				"w": 54,
+				"h": 95
+			},
+			"scale": 1,
+			"frames": [
+				{
+					"filename": "2.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 44,
+						"h": 71
+					},
+					"spriteSourceSize": {
+						"x": 20,
+						"y": 4,
+						"w": 24,
+						"h": 67
+					},
+					"frame": {
+						"x": 1,
+						"y": 1,
+						"w": 24,
+						"h": 67
+					}
+				},
+				{
+					"filename": "3.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 44,
+						"h": 71
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 47,
+						"w": 28,
+						"h": 24
+					},
+					"frame": {
+						"x": 1,
+						"y": 70,
+						"w": 28,
+						"h": 24
+					}
+				},
+				{
+					"filename": "1.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 44,
+						"h": 71
+					},
+					"spriteSourceSize": {
+						"x": 10,
+						"y": 0,
+						"w": 26,
+						"h": 21
+					},
+					"frame": {
+						"x": 27,
+						"y": 1,
+						"w": 26,
+						"h": 21
+					}
+				}
+			]
+		}
+	],
+	"meta": {
+		"app": "http://free-tex-packer.com",
+		"version": "0.6.7"
+	}
+}

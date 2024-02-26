@@ -11,6 +11,8 @@ interface AnimationFrame {
 
 interface AttackAnimationFrame extends AnimationFrame {
   isInitObject?: boolean;
+  positionX?: number;
+  positionY?: number;
 }
 
 interface AttackObjectAnimationFrame extends AnimationFrame {
@@ -24,6 +26,8 @@ export interface ICharacterAnimation {
   idle?: AnimationFrame;
   run?: AnimationFrame;
   attackMelee?: AnimationFrame;
+  attackMeleeArea?: AttackAnimationFrame;
+  attackMeleeAreaObject?: AttackObjectAnimationFrame;
   attackRanged?: AttackAnimationFrame;
   attackRangedObject?: AttackObjectAnimationFrame;
   attackArea?: AttackAnimationFrame;

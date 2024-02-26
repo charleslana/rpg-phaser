@@ -2,6 +2,8 @@ import * as Phaser from 'phaser';
 import { homeSceneKey, preloadSceneKey } from '../data/sceneKeys';
 import {
   battleBackground1,
+  fireKnightAttackArea,
+  fireKnightAttackAreaObject,
   fireKnightAttackMelee,
   fireKnightIdle,
   fireKnightRun,
@@ -143,6 +145,16 @@ export class PreloadScene extends Phaser.Scene {
       fireKnightAttackMelee,
       './assets/images/characters/fire_knight/fire_knight_attack_melee.png',
       './assets/images/characters/fire_knight/fire_knight_attack_melee.json'
+    );
+    this.load.atlas(
+      fireKnightAttackArea,
+      './assets/images/characters/fire_knight/fire_knight_attack_area.png',
+      './assets/images/characters/fire_knight/fire_knight_attack_area.json'
+    );
+    this.load.atlas(
+      fireKnightAttackAreaObject,
+      './assets/images/characters/fire_knight/fire_knight_attack_area_object.png',
+      './assets/images/characters/fire_knight/fire_knight_attack_area_object.json'
     );
   }
 
