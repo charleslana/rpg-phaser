@@ -1,8 +1,10 @@
 import * as Phaser from 'phaser';
 import { battleBackground1 } from '../data/assetKeys';
+import { BattleReport } from '../battle/BattleReport';
 import { battleSceneKey, homeSceneKey } from '../data/sceneKeys';
-import { Character } from '../actor/Character';
+import { Character } from '../battle/Character';
 import { getSpeed, saveSpeed } from '../utils/localStorageUtils';
+import { report } from '../data/report';
 
 export class BattleScene extends Phaser.Scene {
   constructor() {
@@ -95,6 +97,11 @@ export class BattleScene extends Phaser.Scene {
     });
     this.input.keyboard!.on('keydown-NUMPAD_FOUR', () => {
       this.attackMeleeArea(this.enemy2, this.players);
+    });
+    this.input.keyboard!.on('keydown-NUMPAD_FIVE', () => {
+      const battleReport = new BattleReport(this);
+      battleReport.createReport(report);
+      battleReport.start();
     });
   }
 
