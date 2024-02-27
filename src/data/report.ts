@@ -1,8 +1,70 @@
 import { IReport } from '../interface/IReport';
 
 export const report: IReport = {
-  players: [],
-  enemies: [],
+  players: [
+    {
+      id: 1,
+      character: {
+        id: 1,
+        name: 'Test',
+      },
+      hp: 100,
+      sp: 0,
+      slot: 1,
+    },
+    {
+      id: 2,
+      character: {
+        id: 2,
+        name: 'Test2',
+      },
+      hp: 100,
+      sp: 0,
+      slot: 2,
+    },
+    {
+      id: 3,
+      character: {
+        id: 3,
+        name: 'Test3',
+      },
+      hp: 100,
+      sp: 0,
+      slot: 3,
+    },
+  ],
+  enemies: [
+    {
+      id: 1,
+      character: {
+        id: 1,
+        name: 'Test',
+      },
+      hp: 100,
+      sp: 0,
+      slot: 1,
+    },
+    {
+      id: 2,
+      character: {
+        id: 2,
+        name: 'Test2',
+      },
+      hp: 100,
+      sp: 0,
+      slot: 2,
+    },
+    {
+      id: 3,
+      character: {
+        id: 3,
+        name: 'Test3',
+      },
+      hp: 100,
+      sp: 0,
+      slot: 3,
+    },
+  ],
   reports: [
     {
       from: {

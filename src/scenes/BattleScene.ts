@@ -11,6 +11,7 @@ export class BattleScene extends Phaser.Scene {
     super({ key: battleSceneKey });
   }
 
+  private battleReport: BattleReport;
   private players: Character[] = [];
   private enemies: Character[] = [];
   private player: Character;
@@ -34,12 +35,18 @@ export class BattleScene extends Phaser.Scene {
     this.createMovePlayer();
     this.createChangeSpeedButton();
     this.createSlots();
+    this.createBattleReport();
   }
 
   private setBackgroundImage(): void {
     this.cameras.main.setBackgroundColor('#ffffff');
     const backgroundImage = this.add.image(0, 0, battleBackground1).setOrigin(0, 0);
     backgroundImage.setDisplaySize(this.cameras.main.width, this.cameras.main.height);
+  }
+
+  private createBattleReport(): void {
+    this.battleReport = new BattleReport(this);
+    this.battleReport.createReport(report);
   }
 
   private createLayout(): void {
@@ -99,9 +106,7 @@ export class BattleScene extends Phaser.Scene {
       this.attackMeleeArea(this.enemy2, this.players);
     });
     this.input.keyboard!.on('keydown-NUMPAD_FIVE', () => {
-      const battleReport = new BattleReport(this);
-      battleReport.createReport(report);
-      battleReport.start();
+      this.battleReport.start();
     });
   }
 
