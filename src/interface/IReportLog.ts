@@ -20,6 +20,7 @@ export interface ITo {
 }
 
 export interface IReportLog {
+  id: number;
   from: IFrom;
   to?: ITo;
   toList?: ITo[];

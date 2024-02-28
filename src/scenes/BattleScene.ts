@@ -56,6 +56,9 @@ export class BattleScene extends Phaser.Scene {
     this.input.keyboard!.on('keydown-S', () => {
       this.start();
     });
+    this.input.keyboard!.on('keydown-R', () => {
+      this.scene.restart();
+    });
     // this.input.keyboard!.on('keydown-TWO', () => {
     //   this.player.changeRunAnimation(this.speed);
     // });
@@ -146,23 +149,25 @@ export class BattleScene extends Phaser.Scene {
         case CharacterSkillEnum.Melee:
           time = await this.moveTo(
             this.findPlayerById(report.from.id),
-            this.findEnemyById(report.to!.id)
+            this.findEnemyById(report.to!.id),
+            report.id
           );
           console.log(time, 'total time');
           break;
         case CharacterSkillEnum.Ranged:
           await this.moveObjectTo(
             this.findPlayerById(report.from.id),
-            this.findEnemyById(report.to!.id)
+            this.findEnemyById(report.to!.id),
+            report.id
           );
           console.log('proximo 1');
           break;
         case CharacterSkillEnum.Area:
-          await this.attackArea(this.findPlayerById(report.from.id), this.enemies);
+          await this.attackArea(this.findPlayerById(report.from.id), this.enemies, report.id);
           console.log('proximo 2');
           break;
         case CharacterSkillEnum.MeleeArea:
-          await this.attackMeleeArea(this.findPlayerById(report.from.id), this.enemies);
+          await this.attackMeleeArea(this.findPlayerById(report.from.id), this.enemies, report.id);
           console.log('proximo 3');
           break;
         default:
@@ -227,8 +232,8 @@ export class BattleScene extends Phaser.Scene {
   //   });
   // }
 
-  private async moveTo(from: Character, to: Character): Promise<number> {
-    const reportTo = this.battleReport.filterReportToById(to.id)!;
+  private async moveTo(from: Character, to: Character, reportId: number): Promise<number> {
+    const reportTo = this.battleReport.filterReportToById(to.id, reportId)!;
     return new Promise(resolve => {
       const dodge = reportTo.dodge;
       from.statusBar.hide();
@@ -261,7 +266,7 @@ export class BattleScene extends Phaser.Scene {
             }
             from.changeRunAnimation(this.speed);
             from.sprite.toggleFlipX();
-            totalTime += await this.fromReturnToStartPosition(from);
+            totalTime += await this.fromReturnToStartPosition(from, reportId);
             totalTime += await this.sleep(250 / this.speed);
             resolve(totalTime);
           });
@@ -272,8 +277,8 @@ export class BattleScene extends Phaser.Scene {
     });
   }
 
-  private async fromReturnToStartPosition(from: Character): Promise<number> {
-    const reportFrom = this.battleReport.filterReportFromById(from.id)!;
+  private async fromReturnToStartPosition(from: Character, reportId: number): Promise<number> {
+    const reportFrom = this.battleReport.filterReportFromById(from.id, reportId)!;
     return new Promise(resolve => {
       const tweenConfig: Phaser.Types.Tweens.TweenBuilderConfig = {
         targets: from.sprite,
@@ -293,8 +298,8 @@ export class BattleScene extends Phaser.Scene {
     });
   }
 
-  private async moveObjectTo(from: Character, to: Character): Promise<number> {
-    const reportTo = this.battleReport.filterReportToById(to.id)!;
+  private async moveObjectTo(from: Character, to: Character, reportId: number): Promise<number> {
+    const reportTo = this.battleReport.filterReportToById(to.id, reportId)!;
     return new Promise<number>(resolve => {
       const dodge = reportTo.dodge;
       from.statusBar.hide();
@@ -341,7 +346,11 @@ export class BattleScene extends Phaser.Scene {
     });
   }
 
-  private async attackArea(from: Character, toList: Character[]): Promise<number> {
+  private async attackArea(
+    from: Character,
+    toList: Character[],
+    reportId: number
+  ): Promise<number> {
     return new Promise<number>(resolve => {
       from.statusBar.hide();
       const duration = from.changeAttackAreaAnimation(this.speed);
@@ -358,13 +367,17 @@ export class BattleScene extends Phaser.Scene {
         this.time.delayedCall(durationArea / this.speed, async () => {
           from.spriteObject.setDepth(2);
           toList.forEach(to => {
-            const reportTo = this.battleReport.filterReportToById(to.id)!;
-            // TODO pegar o id real
-            to.blinkSprite(this.speed);
-            to.statusBar.updateHPWithAnimation(reportTo.hp, reportTo.maxHP, this.speed);
-            to.damage.changeDamageText(`-${reportTo.damage}`, this.speed);
-            if (reportTo.critical) {
-              to.damage.enableCriticalText(this.speed);
+            const reportTo = this.battleReport.filterReportToById(to.id, reportId)!;
+            const dodge = reportTo.dodge;
+            if (!dodge) {
+              to.blinkSprite(this.speed);
+              to.statusBar.updateHPWithAnimation(reportTo.hp, reportTo.maxHP, this.speed);
+              to.damage.changeDamageText(`-${reportTo.damage}`, this.speed);
+              if (reportTo.critical) {
+                to.damage.enableCriticalText(this.speed);
+              }
+            } else {
+              to.damage.enableDodgeText(this.speed);
             }
           });
           from.spriteObject.destroy();
@@ -375,7 +388,11 @@ export class BattleScene extends Phaser.Scene {
     });
   }
 
-  private async attackMeleeArea(from: Character, toList: Character[]): Promise<number> {
+  private async attackMeleeArea(
+    from: Character,
+    toList: Character[],
+    reportId: number
+  ): Promise<number> {
     return new Promise<number>(resolve => {
       from.statusBar.hide();
       from.changeRunAnimation(this.speed);
@@ -404,15 +421,23 @@ export class BattleScene extends Phaser.Scene {
             }
             this.time.delayedCall(durationArea / this.speed, () => {
               toList.forEach(to => {
-                to.blinkSprite(this.speed);
-                to.statusBar.updateHPWithAnimation(50, 100, this.speed);
-                to.damage.changeDamageText('-50', this.speed);
-                to.damage.enableCriticalText(this.speed);
+                const reportTo = this.battleReport.filterReportToById(to.id, reportId)!;
+                const dodge = reportTo.dodge;
+                if (!dodge) {
+                  to.blinkSprite(this.speed);
+                  to.statusBar.updateHPWithAnimation(reportTo.hp, reportTo.maxHP, this.speed);
+                  to.damage.changeDamageText(`-${reportTo.damage}`, this.speed);
+                  if (reportTo.critical) {
+                    to.damage.enableCriticalText(this.speed);
+                  }
+                } else {
+                  to.damage.enableDodgeText(this.speed);
+                }
               });
               from.changeRunAnimation(this.speed);
               from.sprite.toggleFlipX();
               from.spriteObject.destroy();
-              this.fromReturnToStartPosition(from).then(async time => {
+              this.fromReturnToStartPosition(from, reportId).then(async time => {
                 await this.sleep(250 / this.speed);
                 resolve(durationArea / this.speed + time);
               });

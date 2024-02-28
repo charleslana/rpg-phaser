@@ -68,6 +68,7 @@ export const report: IReport = {
   ],
   reports: [
     {
+      id: 1,
       from: {
         id: 1,
         characterId: 1,
@@ -84,6 +85,7 @@ export const report: IReport = {
       },
     },
     {
+      id: 2,
       from: {
         id: 2,
         characterId: 2,
@@ -100,6 +102,7 @@ export const report: IReport = {
       },
     },
     {
+      id: 3,
       from: {
         id: 3,
         characterId: 3,
@@ -133,10 +136,11 @@ export const report: IReport = {
       ],
     },
     {
+      id: 4,
       from: {
         id: 1,
         characterId: 1,
-        sp: 20,
+        sp: 30,
         maxSP: 100,
         type: CharacterSkillEnum.MeleeArea,
       },
@@ -144,7 +148,7 @@ export const report: IReport = {
         {
           id: 4,
           characterId: 1,
-          damage: 50,
+          damage: 20,
           hp: 5,
           maxHP: 100,
           critical: true,
@@ -152,16 +156,16 @@ export const report: IReport = {
         {
           id: 5,
           characterId: 2,
-          hp: 50,
+          damage: 40,
+          hp: 45,
           maxHP: 100,
-          dodge: true,
         },
         {
           id: 6,
           characterId: 3,
-          damage: 20,
-          hp: 60,
+          hp: 80,
           maxHP: 100,
+          dodge: true,
         },
       ],
     },

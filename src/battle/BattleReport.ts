@@ -21,26 +21,18 @@ export class BattleReport {
     return this.report.reports;
   }
 
-  public filterReportToById(id: number): ITo | undefined {
-    for (const report of this.report.reports) {
-      if (report.to && report.to.id === id) {
-        return report.to;
-      } else if (report.toList) {
-        const toListMatch = report.toList.find(to => to.id === id);
-        if (toListMatch) {
-          return toListMatch;
-        }
-      }
+  public filterReportToById(id: number, reportId: number): ITo | undefined {
+    const report = this.report.reports.find(r => r.id === reportId);
+    if (!report) return undefined;
+    if (report.to && report.to.id === id) {
+      return report.to;
+    } else if (report.toList) {
+      return report.toList.find(to => to.id === id);
     }
     return undefined;
   }
 
-  public filterReportFromById(id: number): IFrom | undefined {
-    for (const report of this.report.reports) {
-      if (report.from.id === id) {
-        return report.from;
-      }
-    }
-    return undefined;
+  public filterReportFromById(id: number, reportId: number): IFrom | undefined {
+    return this.report.reports.find(r => r.id === reportId && r.from.id === id)?.from;
   }
 }
