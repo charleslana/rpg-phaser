@@ -9,7 +9,7 @@ export class StatusBar {
   private scene: Phaser.Scene;
   private sprite: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;
   private statusBarContainer: Phaser.GameObjects.Container;
-  private mpProgressBar: Phaser.GameObjects.Rectangle;
+  private spProgressBar: Phaser.GameObjects.Rectangle;
   private hpProgressBar: Phaser.GameObjects.Rectangle;
 
   public createStatusBarContainer(isFlip = false): void {
@@ -22,7 +22,7 @@ export class StatusBar {
     containerBackground.fillStyle(0x808080, 0);
     containerBackground.fillRect(0, 0, this.sprite.displayWidth, 30);
     this.statusBarContainer.add(containerBackground);
-    this.createMPBar();
+    this.createSPBar();
     this.createHPBar();
   }
 
@@ -51,37 +51,37 @@ export class StatusBar {
     });
   }
 
-  public updateMPWithAnimation(mp: number, maxMP: number, speed: number): void {
-    const normalizedHP = mp / maxMP;
+  public updateSPWithAnimation(sp: number, maxSP: number, speed: number): void {
+    const normalizedHP = sp / maxSP;
     const newWidth = normalizedHP * this.sprite.displayWidth;
     this.scene.tweens.add({
-      targets: this.mpProgressBar,
+      targets: this.spProgressBar,
       width: newWidth,
       duration: 500 / speed,
       ease: Phaser.Math.Easing.Sine,
       onComplete: () => {
-        const isHighMP = mp / maxMP >= 1;
+        const isHighMP = sp / maxSP >= 1;
         if (isHighMP) {
-          this.mpProgressBar.setFillStyle(0xffff00);
+          this.spProgressBar.setFillStyle(0xffff00);
         }
       },
     });
   }
 
-  private createMPBar(): void {
+  private createSPBar(): void {
     const progressBox = this.scene.add.graphics();
     progressBox.fillStyle(0x333333, 1);
     progressBox.fillRoundedRect(0, 0, this.sprite.displayWidth, 5, 2);
-    this.mpProgressBar = this.scene.add.rectangle(0, 0, this.sprite.displayWidth, 5, 0xffa500);
-    this.mpProgressBar.setOrigin(0, 0);
-    this.updateMP(0, 100);
-    this.statusBarContainer.add([progressBox, this.mpProgressBar]);
+    this.spProgressBar = this.scene.add.rectangle(0, 0, this.sprite.displayWidth, 5, 0xffa500);
+    this.spProgressBar.setOrigin(0, 0);
+    this.updateSP(0, 100);
+    this.statusBarContainer.add([progressBox, this.spProgressBar]);
   }
 
-  private updateMP(mp: number, maxMP: number): void {
-    const normalizedMP = mp / maxMP;
+  private updateSP(sp: number, maxSP: number): void {
+    const normalizedMP = sp / maxSP;
     const clampedWidth = Phaser.Math.Clamp(normalizedMP, 0, 1) * this.sprite.displayWidth;
-    this.mpProgressBar.width = clampedWidth;
+    this.spProgressBar.width = clampedWidth;
   }
 
   private createHPBar(): void {
@@ -95,8 +95,8 @@ export class StatusBar {
     this.statusBarContainer.add([progressBox, this.hpProgressBar]);
   }
 
-  private updateHP(mp: number, maxMP: number): void {
-    const normalizedHP = mp / maxMP;
+  private updateHP(hp: number, maxHP: number): void {
+    const normalizedHP = hp / maxHP;
     const clampedWidth = Phaser.Math.Clamp(normalizedHP, 0, 1) * this.sprite.displayWidth;
     this.hpProgressBar.width = clampedWidth;
   }

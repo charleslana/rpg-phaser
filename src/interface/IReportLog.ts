@@ -1,15 +1,19 @@
-interface IFrom {
+import { CharacterSkillEnum } from '../enum/CharacterSkillEnum';
+
+export interface IFrom {
   id: number;
   characterId: number;
   sp: number;
+  maxSP: number;
+  type: CharacterSkillEnum;
 }
 
-interface ITo {
+export interface ITo {
   id: number;
   characterId: number;
   damage?: number;
   hp: number;
-  hpMax: number;
+  maxHP: number;
   sp?: number;
   critical?: boolean;
   dodge?: boolean;

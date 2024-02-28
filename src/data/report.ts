@@ -1,3 +1,4 @@
+import { CharacterSkillEnum } from '../enum/CharacterSkillEnum';
 import { IReport } from '../interface/IReport';
 
 export const report: IReport = {
@@ -35,7 +36,7 @@ export const report: IReport = {
   ],
   enemies: [
     {
-      id: 1,
+      id: 4,
       character: {
         id: 1,
         name: 'Test',
@@ -45,7 +46,7 @@ export const report: IReport = {
       slot: 1,
     },
     {
-      id: 2,
+      id: 5,
       character: {
         id: 2,
         name: 'Test2',
@@ -55,7 +56,7 @@ export const report: IReport = {
       slot: 2,
     },
     {
-      id: 3,
+      id: 6,
       character: {
         id: 3,
         name: 'Test3',
@@ -71,13 +72,15 @@ export const report: IReport = {
         id: 1,
         characterId: 1,
         sp: 25,
+        maxSP: 100,
+        type: CharacterSkillEnum.Melee,
       },
       to: {
-        id: 1,
+        id: 5,
         characterId: 1,
         damage: 25,
         hp: 75,
-        hpMax: 100,
+        maxHP: 100,
       },
     },
     {
@@ -85,13 +88,15 @@ export const report: IReport = {
         id: 2,
         characterId: 2,
         sp: 10,
+        maxSP: 100,
+        type: CharacterSkillEnum.Ranged,
       },
       to: {
-        id: 2,
+        id: 4,
         characterId: 2,
         damage: 15,
         hp: 85,
-        hpMax: 100,
+        maxHP: 100,
       },
     },
     {
@@ -99,29 +104,64 @@ export const report: IReport = {
         id: 3,
         characterId: 3,
         sp: 10,
+        maxSP: 100,
+        type: CharacterSkillEnum.Area,
       },
       toList: [
         {
-          id: 1,
+          id: 4,
           characterId: 1,
           damage: 50,
           hp: 25,
-          hpMax: 100,
+          maxHP: 100,
           critical: true,
         },
         {
-          id: 2,
+          id: 5,
           characterId: 2,
           hp: 85,
-          hpMax: 100,
+          maxHP: 100,
           dodge: true,
         },
         {
-          id: 3,
+          id: 6,
           characterId: 3,
           damage: 20,
           hp: 80,
-          hpMax: 100,
+          maxHP: 100,
+        },
+      ],
+    },
+    {
+      from: {
+        id: 1,
+        characterId: 1,
+        sp: 20,
+        maxSP: 100,
+        type: CharacterSkillEnum.MeleeArea,
+      },
+      toList: [
+        {
+          id: 4,
+          characterId: 1,
+          damage: 50,
+          hp: 5,
+          maxHP: 100,
+          critical: true,
+        },
+        {
+          id: 5,
+          characterId: 2,
+          hp: 50,
+          maxHP: 100,
+          dodge: true,
+        },
+        {
+          id: 6,
+          characterId: 3,
+          damage: 20,
+          hp: 60,
+          maxHP: 100,
         },
       ],
     },

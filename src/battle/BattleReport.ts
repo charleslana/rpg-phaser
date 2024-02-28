@@ -1,13 +1,8 @@
-import * as Phaser from 'phaser';
 import { ICharacterModel } from '../interface/ICharacterModel';
+import { IFrom, IReportLog, ITo } from '../interface/IReportLog';
 import { IReport } from '../interface/IReport';
 
 export class BattleReport {
-  constructor(scene: Phaser.Scene) {
-    this.scene = scene;
-  }
-
-  private scene: Phaser.Scene;
   private report: IReport;
 
   public createReport(report: IReport): void {
@@ -22,12 +17,30 @@ export class BattleReport {
     return this.report.enemies;
   }
 
-  public start(): void {
-    this.report.reports.forEach((_report, index) => {
-      this.scene.time.delayedCall(1000 * index, () => {
-        // eslint-disable-next-line no-console
-        console.log(`Relatório ${index + 1} acionado após ${1000 * index} milissegundos`);
-      });
-    });
+  public getReports(): IReportLog[] {
+    return this.report.reports;
+  }
+
+  public filterReportToById(id: number): ITo | undefined {
+    for (const report of this.report.reports) {
+      if (report.to && report.to.id === id) {
+        return report.to;
+      } else if (report.toList) {
+        const toListMatch = report.toList.find(to => to.id === id);
+        if (toListMatch) {
+          return toListMatch;
+        }
+      }
+    }
+    return undefined;
+  }
+
+  public filterReportFromById(id: number): IFrom | undefined {
+    for (const report of this.report.reports) {
+      if (report.from.id === id) {
+        return report.from;
+      }
+    }
+    return undefined;
   }
 }

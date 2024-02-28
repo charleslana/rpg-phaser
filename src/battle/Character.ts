@@ -18,11 +18,13 @@ export class Character extends Phaser.Physics.Arcade.Sprite {
   public spriteObject: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;
   public characterAnimation: ICharacterAnimation;
   public isFlip: boolean;
+  public id: number;
 
   public createCharacter(battleCharacter: IBattleCharacter): void {
     this.characterAnimation = getCharacterAnimation(battleCharacter.characterId);
     this.createAnimations(battleCharacter.characterId);
     this.sprite = this.scene.physics.add.sprite(this.x, this.y, this.characterAnimation.idle!.key);
+    this.id = battleCharacter.id;
     this.isFlip = battleCharacter.isFlip ?? false;
     this.setupSprite();
     this.slot = battleCharacter.slot;
