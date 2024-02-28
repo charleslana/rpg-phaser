@@ -1,3 +1,4 @@
+import * as Phaser from 'phaser';
 import { BattleScene } from './scenes/BattleScene';
 import { Game, Types } from 'phaser';
 import { HomeScene } from './scenes/HomeScene';

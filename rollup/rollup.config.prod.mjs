@@ -6,6 +6,7 @@ import typescript from '@rollup/plugin-typescript';
 import copy from 'rollup-plugin-copy';
 import url from '@rollup/plugin-url';
 import glslify from 'rollup-plugin-glslify';
+import obfuscator from 'rollup-plugin-obfuscator';
 
 // Production
 import terser from '@rollup/plugin-terser';
@@ -22,7 +23,7 @@ const phasermsg = () => {
             process.stdout.write(`${line}\n${msg}\n${line}\n`);
         }
     }
-}   
+}
 
 export default {
     input: 'src/main.ts',
@@ -55,6 +56,12 @@ export default {
             format: {
                 comments: false
             }
+        }),
+        obfuscator({
+          global: true,
+          options: {
+            renameGlobals: true,
+          }
         }),
         del({
             targets: 'dist/*',
