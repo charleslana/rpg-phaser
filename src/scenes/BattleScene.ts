@@ -163,11 +163,19 @@ export class BattleScene extends Phaser.Scene {
           console.log('proximo 1');
           break;
         case CharacterSkillEnum.Area:
-          await this.attackArea(this.findPlayerById(report.from.id), this.enemies, report.id);
+          await this.attackArea(
+            this.findPlayerById(report.from.id),
+            this.filterEnemiesById(report.from.id),
+            report.id
+          );
           console.log('proximo 2');
           break;
         case CharacterSkillEnum.MeleeArea:
-          await this.attackMeleeArea(this.findPlayerById(report.from.id), this.enemies, report.id);
+          await this.attackMeleeArea(
+            this.findPlayerById(report.from.id),
+            this.filterEnemiesById(report.from.id),
+            report.id
+          );
           console.log('proximo 3');
           break;
         default:
@@ -175,14 +183,35 @@ export class BattleScene extends Phaser.Scene {
       }
       console.log('finalizou o foreach');
     }
+    console.log('fim da partida');
+    this.showDialog();
   }
 
   private findPlayerById(id: number): Character {
-    return this.players.find(character => character.id === id)!;
+    const player = this.players.find(player => player.id === id);
+    if (player) {
+      return player;
+    } else {
+      return this.enemies.find(enemy => enemy.id === id)!;
+    }
   }
 
   private findEnemyById(id: number): Character {
-    return this.enemies.find(character => character.id === id)!;
+    const enemy = this.enemies.find(enemy => enemy.id === id);
+    if (enemy) {
+      return enemy;
+    } else {
+      return this.players.find(player => player.id === id)!;
+    }
+  }
+
+  private filterEnemiesById(id: number): Character[] {
+    const players = this.players.filter(player => player.id === id);
+    if (players.length > 0) {
+      return this.enemies;
+    } else {
+      return this.players;
+    }
   }
 
   private async sleep(ms: number): Promise<number> {
@@ -356,16 +385,17 @@ export class BattleScene extends Phaser.Scene {
       const duration = from.changeAttackAreaAnimation(this.speed);
       if (from.characterAnimation.attackArea!.isInitObject) {
         from.enableAttackAreaObjectAnimation(this.speed);
+        from.spriteObject.setDepth(2);
       }
       this.time.delayedCall(duration / this.speed, () => {
         let durationArea = 0;
         if (!from.characterAnimation.attackArea!.isInitObject) {
           durationArea = from.enableAttackAreaObjectAnimation(this.speed);
+          from.spriteObject.setDepth(2);
         }
         from.changeIdleAnimation(this.speed);
         from.statusBar.show();
         this.time.delayedCall(durationArea / this.speed, async () => {
-          from.spriteObject.setDepth(2);
           toList.forEach(to => {
             const reportTo = this.battleReport.filterReportToById(to.id, reportId)!;
             const dodge = reportTo.dodge;
@@ -412,12 +442,13 @@ export class BattleScene extends Phaser.Scene {
           const duration = from.changeAttackMeleeAreaAnimation(this.speed);
           if (from.characterAnimation.attackMeleeArea!.isInitObject) {
             from.enableAttackMeleeAreaObjectAnimation(this.speed);
+            from.sprite.setDepth(2);
           }
-          from.sprite.setDepth(2);
           this.time.delayedCall(duration / this.speed, () => {
             let durationArea = 0;
             if (!from.characterAnimation.attackMeleeArea!.isInitObject) {
               durationArea = from.enableAttackMeleeAreaObjectAnimation(this.speed);
+              from.sprite.setDepth(2);
             }
             this.time.delayedCall(durationArea / this.speed, () => {
               toList.forEach(to => {
@@ -585,5 +616,75 @@ export class BattleScene extends Phaser.Scene {
         }
       });
     }
+  }
+
+  private showDialog(): void {
+    const overlay = this.add.rectangle(
+      0,
+      0,
+      this.cameras.main.width,
+      this.cameras.main.height,
+      0x000000,
+      0.5
+    );
+    overlay.setOrigin(0, 0);
+    overlay.setDepth(997);
+    const modalX = this.cameras.main.width / 2;
+    const modalY = this.cameras.main.height / 2;
+    const modalBackground = this.add.rectangle(modalX, modalY, 500, 300, 0xffffff);
+    modalBackground.setOrigin(0.5);
+    modalBackground.setDepth(998);
+    const text = this.add.text(
+      modalX,
+      modalY,
+      'Batalha finalizada\nExp adquirido: +50\nGold adquirido: +15',
+      {
+        fontFamily: 'Arial',
+        fontSize: '24px',
+        color: '#000000',
+        align: 'center',
+        wordWrap: {
+          width: 480,
+          useAdvancedWrap: true,
+        },
+      }
+    );
+    text.setOrigin(0.5);
+    text.setDepth(999);
+    const button = this.add.text(modalX, modalY + 80, 'Fechar', {
+      fontFamily: 'Arial',
+      fontSize: '24px',
+      color: '#ffffff',
+      backgroundColor: '#007bff',
+      padding: {
+        left: 10,
+        right: 10,
+        top: 5,
+        bottom: 5,
+      },
+    });
+    button.setOrigin(0.5);
+    button.setDepth(999);
+    button.setInteractive({ cursor: 'pointer' });
+    button.on('pointerup', () => {
+      this.scene.restart();
+      overlay.destroy();
+      modalBackground.destroy();
+      text.destroy();
+      button.destroy();
+      blocker.destroy();
+    });
+    const blocker = this.add.rectangle(
+      0,
+      0,
+      this.cameras.main.width,
+      this.cameras.main.height,
+      0x000000,
+      0
+    );
+    blocker.setOrigin(0, 0);
+    blocker.setInteractive();
+    blocker.setDepth(996);
+    blocker.on('pointerup', () => {});
   }
 }
