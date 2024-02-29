@@ -238,5 +238,38 @@ export const report: IReport = {
         },
       ],
     },
+    {
+      id: 8,
+      from: {
+        id: 4,
+        characterId: 1,
+        sp: 15,
+        maxSP: 100,
+        type: CharacterSkillEnum.MeleeArea,
+      },
+      toList: [
+        {
+          id: 1,
+          characterId: 1,
+          hp: 50,
+          maxHP: 100,
+          dodge: true,
+        },
+        {
+          id: 2,
+          characterId: 2,
+          hp: 40,
+          maxHP: 100,
+          dodge: true,
+        },
+        {
+          id: 3,
+          characterId: 3,
+          hp: 10,
+          maxHP: 100,
+          dodge: true,
+        },
+      ],
+    },
   ],
 };
