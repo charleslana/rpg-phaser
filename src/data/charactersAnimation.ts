@@ -89,9 +89,9 @@ export const characterRanger: ICharacterAnimation = {
 
 export const characterMage: ICharacterAnimation = {
   scaleX: 1.2,
-  shadowX: -5,
+  shadowX: -10,
   shadowY: 20,
-  shadowScale: 0.7,
+  shadowScale: 0.6,
   idle: {
     key: mageIdle,
     frames: generateFrameNumbers(mageIdle, 1, 6),

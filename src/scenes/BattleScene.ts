@@ -211,7 +211,7 @@ export class BattleScene extends Phaser.Scene {
   private async moveTo(from: Character, to: Character, reportId: number): Promise<number> {
     const reportTo = this.battleReport.filterReportToById(to.id, reportId)!;
     return new Promise(resolve => {
-      from.statusBar.hide();
+      from.hideCharacterInfo();
       from.changeRunAnimation(this.speed);
       const tweenConfig: Phaser.Types.Tweens.TweenBuilderConfig = {
         targets: from.sprite,
@@ -262,7 +262,7 @@ export class BattleScene extends Phaser.Scene {
           from.sprite.depth--;
           from.sprite.toggleFlipX();
           from.changeIdleAnimation(this.speed);
-          from.statusBar.show();
+          from.showCharacterInfo();
           from.statusBar.updateSPWithAnimation(reportFrom.sp, reportFrom.maxSP, this.speed);
           resolve(tweenConfig.duration!);
         },
@@ -274,7 +274,7 @@ export class BattleScene extends Phaser.Scene {
   private async moveObjectTo(from: Character, to: Character, reportId: number): Promise<number> {
     const reportTo = this.battleReport.filterReportToById(to.id, reportId)!;
     return new Promise(resolve => {
-      from.statusBar.hide();
+      from.hideCharacterInfo();
       const duration = from.changeAttackRangedAnimation(this.speed);
       if (from.characterAnimation.attackRanged!.isInitObject) {
         from.enableAttackRangedObjectAnimation(this.speed);
@@ -284,7 +284,7 @@ export class BattleScene extends Phaser.Scene {
           from.enableAttackRangedObjectAnimation(this.speed);
         }
         from.changeIdleAnimation(this.speed);
-        from.statusBar.show();
+        from.showCharacterInfo();
         const tweenConfig: Phaser.Types.Tweens.TweenBuilderConfig = {
           targets: from.spriteObject,
           x: from.isFlip ? to.x - to.width * 2 : to.x + to.width * 2,
@@ -311,7 +311,7 @@ export class BattleScene extends Phaser.Scene {
     reportId: number
   ): Promise<number> {
     return new Promise<number>(resolve => {
-      from.statusBar.hide();
+      from.hideCharacterInfo();
       const duration = from.changeAttackAreaAnimation(this.speed);
       if (from.characterAnimation.attackArea!.isInitObject) {
         from.enableAttackAreaObjectAnimation(this.speed);
@@ -324,7 +324,7 @@ export class BattleScene extends Phaser.Scene {
           from.spriteObject.setDepth(2);
         }
         from.changeIdleAnimation(this.speed);
-        from.statusBar.show();
+        from.showCharacterInfo();
         this.time.delayedCall(this.getMsWithSpeed(durationArea), async () => {
           toList.forEach(to => {
             const reportTo = this.battleReport.filterReportToById(to.id, reportId)!;
@@ -346,7 +346,7 @@ export class BattleScene extends Phaser.Scene {
     reportId: number
   ): Promise<number> {
     return new Promise<number>(resolve => {
-      from.statusBar.hide();
+      from.hideCharacterInfo();
       from.changeRunAnimation(this.speed);
       const distanceFromRightEdge = from.characterAnimation.attackMeleeArea!.positionX!;
       const tweenConfig: Phaser.Types.Tweens.TweenBuilderConfig = {

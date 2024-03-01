@@ -10,6 +10,7 @@ import { fileURLToPath } from 'node:url';
 import copy from 'rollup-plugin-copy';
 import alias from '@rollup/plugin-alias'
 import path from 'path';
+import replace from '@rollup/plugin-replace';
 
 const __dirname = fileURLToPath(new URL('.', import.meta.url));
 
@@ -24,6 +25,10 @@ export default {
         minifyInternalExports: false,
     },
     plugins: [
+        replace({
+          'process.env.DEBUG': false,
+          preventAssignment: true
+        }),
         url({
             emitFiles: true
         }),

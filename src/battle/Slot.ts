@@ -15,7 +15,7 @@ export class Slot extends Phaser.GameObjects.Container {
   private startXBack: number;
   private startY: number;
   private maxSlot = 6;
-  private slotAlpha = 1;
+  private slotAlpha = process.env.DEBUG ? 1 : 0;
 
   public setPlayers(players: Character[]): void {
     for (let i = 1; i <= this.maxSlot; i++) {

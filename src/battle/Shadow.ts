@@ -22,6 +22,14 @@ export class Shadow extends Phaser.Physics.Arcade.Sprite {
     this.sprite.setScale(characterAnimation.shadowScale);
   }
 
+  public show(): void {
+    this.sprite.setVisible(true);
+  }
+
+  public hide(): void {
+    this.sprite.setVisible(false);
+  }
+
   private create(): void {
     this.sprite = this.scene.physics.add.sprite(this.x, this.y, shadowIcon);
   }

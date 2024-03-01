@@ -161,7 +161,7 @@ export class Character extends Phaser.Physics.Arcade.Sprite {
           tween.stop();
           this.sprite.setAlpha(1);
           if (hp === 0) {
-            this.statusBar.hide();
+            this.hideCharacterInfo();
             this.sprite.setVisible(false);
           }
         });
@@ -176,6 +176,16 @@ export class Character extends Phaser.Physics.Arcade.Sprite {
     this.damage.createDamageText(isFlip);
     this.shadow = new Shadow(this.scene, 0, 0);
     this.shadow.set(this.sprite, this.characterAnimation, this.isFlip);
+  }
+
+  public hideCharacterInfo(): void {
+    this.statusBar.hide();
+    this.shadow.hide();
+  }
+
+  public showCharacterInfo(): void {
+    this.statusBar.show();
+    this.shadow.show();
   }
 
   private updateAnimationSpriteObjectSpeed(speed: number): number {
