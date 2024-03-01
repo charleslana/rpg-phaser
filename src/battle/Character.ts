@@ -1,10 +1,10 @@
 import * as Phaser from 'phaser';
-import { Damage } from '../components/Damage';
+import { Damage } from './Damage';
 import { getCharacterAnimation } from '../utils/characterUtils';
 import { IAnimation } from '../interface/IAnimation';
 import { IBattleCharacter } from '../interface/IBattleCharacter';
 import { ICharacterAnimation } from '../interface/ICharacterAnimation';
-import { StatusBar } from '../components/StatusBar';
+import { StatusBar } from './StatusBar';
 
 export class Character extends Phaser.Physics.Arcade.Sprite {
   constructor(scene: Phaser.Scene, x: number, y: number) {
@@ -98,22 +98,14 @@ export class Character extends Phaser.Physics.Arcade.Sprite {
     }
     this.spriteObject.setFlipX(this.isFlip);
     this.sprite.setDepth(1);
-    const currentAnimation = this.spriteObject.anims.currentAnim as IAnimation;
-    if (currentAnimation) {
-      currentAnimation.frameRate = currentAnimation.frameRateStart * speed;
-      this.spriteObject.anims.play(currentAnimation.key);
-    }
-    return this.spriteObject.anims.currentAnim!.duration;
+    return this.updateAnimationSpriteObjectSpeed(speed);
   }
 
   public enableAttackAreaObjectAnimation(speed: number): number {
     const distanceFromRightEdge = this.characterAnimation.attackAreaObject!.positionX!;
-    let x: number;
-    if (!this.isFlip) {
-      x = this.scene.cameras.main.width - distanceFromRightEdge;
-    } else {
-      x = distanceFromRightEdge;
-    }
+    const x = !this.isFlip
+      ? this.scene.cameras.main.width - distanceFromRightEdge
+      : distanceFromRightEdge;
     this.spriteObject = this.scene.physics.add.sprite(
       x,
       this.characterAnimation.attackAreaObject!.positionY!,
@@ -129,22 +121,14 @@ export class Character extends Phaser.Physics.Arcade.Sprite {
     }
     this.spriteObject.setFlipX(this.isFlip);
     this.sprite.setDepth(1);
-    const currentAnimation = this.spriteObject.anims.currentAnim as IAnimation;
-    if (currentAnimation) {
-      currentAnimation.frameRate = currentAnimation.frameRateStart * speed;
-      this.spriteObject.anims.play(currentAnimation.key);
-    }
-    return this.spriteObject.anims.currentAnim!.duration;
+    return this.updateAnimationSpriteObjectSpeed(speed);
   }
 
   public enableAttackMeleeAreaObjectAnimation(speed: number): number {
     const distanceFromRightEdge = this.characterAnimation.attackMeleeAreaObject!.positionX!;
-    let x: number;
-    if (!this.isFlip) {
-      x = this.scene.cameras.main.width - distanceFromRightEdge;
-    } else {
-      x = distanceFromRightEdge;
-    }
+    const x = !this.isFlip
+      ? this.scene.cameras.main.width - distanceFromRightEdge
+      : distanceFromRightEdge;
     this.spriteObject = this.scene.physics.add.sprite(
       x,
       this.characterAnimation.attackMeleeAreaObject!.positionY!,
@@ -160,12 +144,7 @@ export class Character extends Phaser.Physics.Arcade.Sprite {
     }
     this.spriteObject.setFlipX(this.isFlip);
     this.sprite.setDepth(1);
-    const currentAnimation = this.spriteObject.anims.currentAnim as IAnimation;
-    if (currentAnimation) {
-      currentAnimation.frameRate = currentAnimation.frameRateStart * speed;
-      this.spriteObject.anims.play(currentAnimation.key);
-    }
-    return this.spriteObject.anims.currentAnim!.duration;
+    return this.updateAnimationSpriteObjectSpeed(speed);
   }
 
   public blinkSprite(speed: number): void {
@@ -189,6 +168,15 @@ export class Character extends Phaser.Physics.Arcade.Sprite {
     this.statusBar.createStatusBarContainer(isFlip);
     this.damage = new Damage(this.scene, this.sprite);
     this.damage.createDamageText(isFlip);
+  }
+
+  private updateAnimationSpriteObjectSpeed(speed: number): number {
+    const currentAnimation = this.spriteObject.anims.currentAnim as IAnimation;
+    if (currentAnimation) {
+      currentAnimation.frameRate = currentAnimation.frameRateStart * speed;
+      this.spriteObject.anims.play(currentAnimation.key);
+    }
+    return this.spriteObject.anims.currentAnim!.duration;
   }
 
   private setupSprite(): void {

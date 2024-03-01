@@ -124,10 +124,14 @@ export class PreloadScene extends Phaser.Scene {
   }
 
   private loadAssets(): void {
-    this.load.image(battleBackground1, './assets/images/battle-bg/1.png');
+    this.loadBattleBackground();
     this.loadFireKnight();
     this.loadRanger();
     this.loadMage();
+  }
+
+  private loadBattleBackground(): void {
+    this.load.image(battleBackground1, './assets/images/battle-bg/1.png');
   }
 
   private loadFireKnight(): void {
