@@ -23,6 +23,9 @@ interface AttackObjectAnimationFrame extends AnimationFrame {
 
 export interface ICharacterAnimation {
   scaleX?: number;
+  shadowX?: number;
+  shadowY?: number;
+  shadowScale?: number;
   idle?: AnimationFrame;
   run?: AnimationFrame;
   attackMelee?: AnimationFrame;

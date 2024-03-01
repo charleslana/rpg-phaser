@@ -13,6 +13,7 @@ import {
   rangerAttackRanged,
   rangerAttackRangedObject,
   rangerIdle,
+  shadowIcon,
 } from '../data/assetKeys';
 
 export class PreloadScene extends Phaser.Scene {
@@ -125,6 +126,7 @@ export class PreloadScene extends Phaser.Scene {
 
   private loadAssets(): void {
     this.loadBattleBackground();
+    this.loadIcons();
     this.loadFireKnight();
     this.loadRanger();
     this.loadMage();
@@ -132,6 +134,10 @@ export class PreloadScene extends Phaser.Scene {
 
   private loadBattleBackground(): void {
     this.load.image(battleBackground1, './assets/images/battle-bg/1.png');
+  }
+
+  private loadIcons(): void {
+    this.load.image(shadowIcon, './assets/images/icons/shadow.png');
   }
 
   private loadFireKnight(): void {

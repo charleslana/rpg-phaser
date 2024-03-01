@@ -4,6 +4,7 @@ import { getCharacterAnimation } from '../utils/characterUtils';
 import { IAnimation } from '../interface/IAnimation';
 import { IBattleCharacter } from '../interface/IBattleCharacter';
 import { ICharacterAnimation } from '../interface/ICharacterAnimation';
+import { Shadow } from './Shadow';
 import { StatusBar } from './StatusBar';
 
 export class Character extends Phaser.Physics.Arcade.Sprite {
@@ -19,6 +20,7 @@ export class Character extends Phaser.Physics.Arcade.Sprite {
   public characterAnimation: ICharacterAnimation;
   public isFlip: boolean;
   public id: number;
+  public shadow: Shadow;
 
   public createCharacter(battleCharacter: IBattleCharacter): void {
     this.characterAnimation = getCharacterAnimation(battleCharacter.characterId);
@@ -172,6 +174,8 @@ export class Character extends Phaser.Physics.Arcade.Sprite {
     this.statusBar.createStatusBarContainer(isFlip);
     this.damage = new Damage(this.scene, this.sprite);
     this.damage.createDamageText(isFlip);
+    this.shadow = new Shadow(this.scene, 0, 0);
+    this.shadow.set(this.sprite, this.characterAnimation, this.isFlip);
   }
 
   private updateAnimationSpriteObjectSpeed(speed: number): number {

@@ -30,13 +30,13 @@ export default {
         typescript(),
         alias({
             entries: [
-                { 
+                {
                     find: 'phaser',
                     replacement: path.resolve(__dirname, '../node_modules/phaser/dist/phaser.min.js')
                 }
             ]
         }),
-        
+
         glslify(),
         nodeResolve({
             extensions: ['ts', 'tsx'],

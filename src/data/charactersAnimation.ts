@@ -15,6 +15,9 @@ import {
 
 export const characterFireKnight: ICharacterAnimation = {
   scaleX: 2,
+  shadowX: 7,
+  shadowY: 20,
+  shadowScale: 0.7,
   idle: {
     key: fireKnightIdle,
     frames: generateFrameNumbers(fireKnightIdle, 1, 8),
@@ -56,6 +59,9 @@ export const characterFireKnight: ICharacterAnimation = {
 
 export const characterRanger: ICharacterAnimation = {
   scaleX: 2,
+  shadowX: -11,
+  shadowY: 20,
+  shadowScale: 0.7,
   idle: {
     key: rangerIdle,
     frames: generateFrameNumbers(rangerIdle, 1, 12),
@@ -83,6 +89,9 @@ export const characterRanger: ICharacterAnimation = {
 
 export const characterMage: ICharacterAnimation = {
   scaleX: 1.2,
+  shadowX: -5,
+  shadowY: 20,
+  shadowScale: 0.7,
   idle: {
     key: mageIdle,
     frames: generateFrameNumbers(mageIdle, 1, 6),
