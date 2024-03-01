@@ -147,7 +147,7 @@ export class Character extends Phaser.Physics.Arcade.Sprite {
     return this.updateAnimationSpriteObjectSpeed(speed);
   }
 
-  public blinkSprite(speed: number): void {
+  public blinkSprite(speed: number, hp: number): void {
     const tween = this.scene.tweens.add({
       targets: this.sprite,
       alpha: 0,
@@ -158,6 +158,10 @@ export class Character extends Phaser.Physics.Arcade.Sprite {
         this.scene.time.delayedCall(500 / speed, () => {
           tween.stop();
           this.sprite.setAlpha(1);
+          if (hp === 0) {
+            this.statusBar.hide();
+            this.sprite.setVisible(false);
+          }
         });
       },
     });

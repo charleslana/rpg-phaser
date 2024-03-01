@@ -236,16 +236,18 @@ export class BattleScene extends Phaser.Scene {
   }
 
   private handleAttackTo(reportTo: ITo, to: Character): void {
-    if (!reportTo.dodge) {
-      to.blinkSprite(this.speed);
-      to.statusBar.updateHPWithAnimation(reportTo.hp, reportTo.maxHP, this.speed);
-      to.damage.changeDamageText(`-${reportTo.damage}`, this.speed);
-      if (reportTo.critical) {
-        to.damage.enableCriticalText(this.speed);
+    if (reportTo) {
+      if (!reportTo.dodge) {
+        to.blinkSprite(this.speed, reportTo.hp);
+        to.statusBar.updateHPWithAnimation(reportTo.hp, reportTo.maxHP, this.speed);
+        to.damage.changeDamageText(`-${reportTo.damage}`, this.speed);
+        if (reportTo.critical) {
+          to.damage.enableCriticalText(this.speed);
+        }
+        return;
       }
-      return;
+      to.damage.enableDodgeText(this.speed);
     }
-    to.damage.enableDodgeText(this.speed);
   }
 
   private async fromReturnToStartPosition(from: Character, reportId: number): Promise<number> {
