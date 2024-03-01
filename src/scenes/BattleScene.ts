@@ -235,7 +235,7 @@ export class BattleScene extends Phaser.Scene {
     });
   }
 
-  private handleAttackTo(reportTo: ITo, to: Character): void {
+  private handleAttackTo(reportTo: ITo | undefined, to: Character): void {
     if (reportTo) {
       if (!reportTo.dodge) {
         to.blinkSprite(this.speed, reportTo.hp);
